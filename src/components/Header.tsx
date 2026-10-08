@@ -18,6 +18,7 @@ import {
   Info,
   HeartHandshake,
   UserCheck,
+  BookOpen,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -38,9 +39,11 @@ export default function Header({
 
   const navItems = [
     { id: "dashboard", label: "Tableau de Bord", icon: Activity },
-    { id: "sensorielle", label: "Sphère Sensorielle", icon: Sliders },
-    { id: "cognitive", label: "Sphère Cognitive", icon: Compass },
-    { id: "ressources", label: "Ressources & Outils", icon: Info },
+    { id: "sensorielle", label: "Sensorialité", icon: Sliders },
+    { id: "cognitive", label: "Cognition", icon: Compass },
+    { id: "proches", label: "Guide Proches", icon: HeartHandshake },
+    { id: "mediatheque", label: "Médiathèque", icon: BookOpen },
+    { id: "ressources", label: "Boîte à Outils", icon: Info },
   ];
 
   return (

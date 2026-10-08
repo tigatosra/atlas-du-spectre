@@ -9,7 +9,10 @@ import TheorySidebar from "../components/TheorySidebar";
 import DiagnosticModal from "../components/DiagnosticModal";
 import SensorySphereView from "../components/SensorySphereView";
 import CognitiveSphereView from "../components/CognitiveSphereView";
+import CaregiverGuideView from "../components/CaregiverGuideView";
+import MediaLibraryView from "../components/MediaLibraryView";
 import ResourcesView from "../components/ResourcesView";
+import IntentNavigator from "../components/IntentNavigator";
 import { initialRadarAxes } from "../data/mockData";
 import { RadarAxis } from "../types/spectrum";
 import { usePerspective } from "../context/PerspectiveContext";
@@ -65,13 +68,26 @@ export default function HomePage() {
 
         {activeTab === "cognitive" && <CognitiveSphereView />}
 
+        {activeTab === "proches" && (
+          <CaregiverGuideView
+            onExploreMediaForCaregivers={() => setActiveTab("mediatheque")}
+          />
+        )}
+
+        {activeTab === "mediatheque" && <MediaLibraryView />}
+
         {activeTab === "ressources" && (
           <ResourcesView onOpenDiagnosticModal={() => setIsDiagnosticModalOpen(true)} />
         )}
 
         {activeTab === "dashboard" && (
           <>
-            {/* BANNER D'ACCUEIL & MANIFESTE NEURO-AFFIRMATIF AVEC SWITCH DE PERSPECTIVE */}
+            {/* 1. INTENT NAVIGATOR: "QUE RECHERCHEZ-VOUS AUJOURD'HUI ?" */}
+            <IntentNavigator
+              onSelectIntent={(targetTab) => setActiveTab(targetTab)}
+            />
+
+            {/* 2. BANNER D'ACCUEIL & MANIFESTE NEURO-AFFIRMATIF */}
             <section className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
               {/* Subtle accent glow */}
               <div className="absolute top-0 right-1/4 w-96 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -83,7 +99,7 @@ export default function HomePage() {
                   {/* DUAL PERSPECTIVE BANNER SELECTOR */}
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-xs font-mono text-slate-400">
-                      Vous explorez en tant que :
+                      Perspective appliquée :
                     </span>
                     <div className="inline-flex items-center bg-slate-900/90 p-0.5 rounded-lg border border-slate-800">
                       <button
@@ -139,31 +155,41 @@ export default function HomePage() {
                 {/* QUICK ACTIONS BANNER */}
                 <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
                   <button
-                    onClick={() => setIsDiagnosticModalOpen(true)}
-                    className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-all cursor-pointer"
+                    onClick={() => setActiveTab("mediatheque")}
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all cursor-pointer"
                   >
-                    <Compass className="w-4 h-4 text-cyan-200" />
-                    <span>Parcours Diagnostiques</span>
+                    <BookOpen className="w-4 h-4 text-purple-200" />
+                    <span>Livres, Audiobooks & Vidéos</span>
                     <ArrowRight className="w-4 h-4 text-white" />
                   </button>
 
                   <button
                     onClick={() => {
-                      const traitSection = document.getElementById("trait-explorer-section");
-                      if (traitSection) {
-                        traitSection.scrollIntoView({ behavior: "smooth" });
+                      if (isRelativePerspective) {
+                        setActiveTab("proches");
+                      } else {
+                        setActiveTab("sensorielle");
                       }
                     }}
                     className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors"
                   >
-                    <Sliders className="w-4 h-4 text-cyan-400" />
-                    <span>Tester la Sensibilité Auditive</span>
+                    {isRelativePerspective ? (
+                      <>
+                        <HeartHandshake className="w-4 h-4 text-emerald-400" />
+                        <span>Guide Simple pour l'Entourage</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sliders className="w-4 h-4 text-cyan-400" />
+                        <span>Tester mes Canaux Sensoriels</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
             </section>
 
-            {/* 1. CARTES DE STATISTIQUES RAPIDES */}
+            {/* 3. CARTES DE STATISTIQUES RAPIDES */}
             <section>
               <div className="flex items-center justify-between mb-3 px-1">
                 <h2 className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
@@ -177,7 +203,7 @@ export default function HomePage() {
               <StatCards />
             </section>
 
-            {/* 2. GRILLE ASYMÉTRIQUE PRINCIPALE (TABLEAU DE BORD) */}
+            {/* 4. GRILLE ASYMÉTRIQUE PRINCIPALE (TABLEAU DE BORD) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
               {/* COLONNE GAUCHE / PRINCIPALE (8 COLONNES) */}
@@ -197,57 +223,69 @@ export default function HomePage() {
                   <TraitExplorer />
                 </div>
 
-                {/* COMPLÉMENT : EXPLORER LES AUTRES SPHÈRES */}
+                {/* ACCÈS DIRECT AUX ESPACES THÉMATIQUES */}
                 <section className="glass-panel rounded-2xl p-6 border border-slate-800/80">
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
                     <div>
                       <h3 className="text-base font-bold text-white flex items-center gap-2">
                         <Layers className="w-4 h-4 text-cyan-400" />
-                        Accéder aux Espaces Détaillés
+                        Explorer les Modules Approfondis
                       </h3>
                       <p className="text-xs text-slate-400">
-                        Chaque sphère dispose de son module complet et interactif.
+                        Chaque thématique dispose d'outils interactifs dédiés.
                       </p>
                     </div>
                     <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
-                      Entièrement Disponible
+                      Modules Prêts
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <button
                       onClick={() => setActiveTab("sensorielle")}
-                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-400 hover:bg-slate-900 transition-all text-left group"
+                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-400 hover:bg-slate-900 transition-all text-left group"
                     >
                       <div className="text-xs font-bold text-cyan-300 mb-1 group-hover:text-cyan-200">
                         Sphère Sensorielle ➔
                       </div>
-                      <p className="text-[11px] text-slate-300 leading-snug">
-                        Audition, vision/néons, textures cutanées, proprioception et déclencheurs.
+                      <p className="text-[11px] text-slate-400 leading-snug">
+                        Audition, vision/néons, textures, proprioception et saturation.
                       </p>
                     </button>
 
                     <button
                       onClick={() => setActiveTab("cognitive")}
-                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-purple-400 hover:bg-slate-900 transition-all text-left group"
+                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-purple-400 hover:bg-slate-900 transition-all text-left group"
                     >
                       <div className="text-xs font-bold text-purple-300 mb-1 group-hover:text-purple-200">
                         Sphère Cognitive ➔
                       </div>
-                      <p className="text-[11px] text-slate-300 leading-snug">
-                        Monotropisme, simulateur des Cuillères et traducteur de Double Empathie.
+                      <p className="text-[11px] text-slate-400 leading-snug">
+                        Monotropisme, simulateur de Cuillères et Double Empathie.
                       </p>
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("ressources")}
-                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-400 hover:bg-slate-900 transition-all text-left group"
+                      onClick={() => setActiveTab("proches")}
+                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-400 hover:bg-slate-900 transition-all text-left group"
                     >
                       <div className="text-xs font-bold text-emerald-300 mb-1 group-hover:text-emerald-200">
-                        Outils & Ressources ➔
+                        Guide des Proches ➔
                       </div>
-                      <p className="text-[11px] text-slate-300 leading-snug">
-                        Passeport d'urgence sensorielle, modèles de lettres et guide pour proches.
+                      <p className="text-[11px] text-slate-400 leading-snug">
+                        4 analogies simples, gestion du meltdown/shutdown et FAQ famille.
+                      </p>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab("mediatheque")}
+                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-400 hover:bg-slate-900 transition-all text-left group"
+                    >
+                      <div className="text-xs font-bold text-amber-300 mb-1 group-hover:text-amber-200">
+                        Médiathèque Complète ➔
+                      </div>
+                      <p className="text-[11px] text-slate-400 leading-snug">
+                        Livres, audiobooks, documentaires Arte, podcasts et tests.
                       </p>
                     </button>
                   </div>
