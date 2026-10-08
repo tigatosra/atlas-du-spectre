@@ -1,0 +1,564 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+  intensityStatsData,
+  initialExperiences,
+} from "../data/mockData";
+import { ExperienceComment } from "../types/spectrum";
+import { useSensory } from "../context/SensoryContext";
+import {
+  Volume2,
+  VolumeX,
+  Volume1,
+  Headphones,
+  Send,
+  Heart,
+  Tag,
+  Sparkles,
+  CheckCircle2,
+  Shield,
+  Layers,
+  BarChart2,
+  AlertTriangle,
+  Lightbulb,
+  Sliders,
+} from "lucide-react";
+
+export default function TraitExplorer() {
+  const { lowSensoryMode } = useSensory();
+
+  const [intensity, setIntensity] = useState<number>(8); // Default peak 8
+  const [filterMode, setFilterMode] = useState<"current" | "all">("current");
+  const [experiences, setExperiences] =
+    useState<ExperienceComment[]>(initialExperiences);
+
+  // New experience form states
+  const [newText, setNewText] = useState("");
+  const [newContext, setNewContext] = useState("Open-space");
+  const [newCoping, setNewCoping] = useState("");
+  const [submittedSuccess, setSubmittedSuccess] = useState(false);
+
+  const currentStat = intensityStatsData[intensity];
+
+  // Filter experiences according to mode
+  const filteredExperiences = experiences.filter((exp) =>
+    filterMode === "current" ? exp.intensityLevel === intensity : true
+  );
+
+  // Handle Resonance (Like / "Je résonne")
+  const handleToggleResonance = (id: string) => {
+    setExperiences((prev) =>
+      prev.map((exp) => {
+        if (exp.id === id) {
+          const wasResonated = exp.userResonated;
+          return {
+            ...exp,
+            userResonated: !wasResonated,
+            resonancesCount: wasResonated
+              ? exp.resonancesCount - 1
+              : exp.resonancesCount + 1,
+          };
+        }
+        return exp;
+      })
+    );
+  };
+
+  // Submit new testimony
+  const handleSubmitExperience = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newText.trim()) return;
+
+    const newComment: ExperienceComment = {
+      id: `custom-${Date.now()}`,
+      author: "Vous (Anonyme)",
+      avatarText: "VS",
+      intensityLevel: intensity,
+      timestamp: "À l'instant",
+      contextTag: newContext,
+      text: newText.trim(),
+      resonancesCount: 1,
+      userResonated: true,
+      copingStrategy: newCoping.trim() || "Sas de repos dans une pièce calme.",
+      tags: ["Vécu Direct", newContext, "Partage Récent"],
+    };
+
+    setExperiences([newComment, ...experiences]);
+    setNewText("");
+    setNewCoping("");
+    setSubmittedSuccess(true);
+    setTimeout(() => setSubmittedSuccess(false), 4000);
+  };
+
+  // Soundwave waveform simulation bars
+  const waveHeights = [20, 35, 60, 40, 85, 95, 50, 70, 90, 45, 65, 80, 55, 30];
+
+  return (
+    <section className="glass-panel rounded-2xl p-5 md:p-8 border border-slate-800/80 shadow-2xl relative">
+      {/* SECTION HEADER */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-cyan-950/70 border border-cyan-500/40 text-cyan-400">
+              <Headphones className="w-4 h-4" />
+            </span>
+            <span className="text-xs font-mono uppercase tracking-widest text-cyan-400">
+              Sphère Sensorielle • Trait Explorer
+            </span>
+            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-purple-950/60 text-purple-300 border border-purple-500/30">
+              Données Collaboratives
+            </span>
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-bold text-white mt-1.5 flex items-center gap-2">
+            Sensibilité Auditive & Traitement Acoustique
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
+            Chez les personnes neuroatypiques, le cerveau ne dispose souvent pas du filtre automatique
+            qui atténue les bruits de fond. Explorez ci-dessous comment l'intensité se vit concrètement.
+          </p>
+        </div>
+
+        {/* SOUND INTENSITY VISUALIZER BADGE */}
+        <div className="flex items-center gap-3 bg-slate-950/80 px-4 py-2.5 rounded-xl border border-slate-800 self-start lg:self-auto">
+          <div className="flex items-end gap-1 h-7">
+            {waveHeights.map((h, i) => {
+              const adjustedHeight = Math.min(
+                100,
+                Math.round(h * (intensity / 7))
+              );
+              return (
+                <span
+                  key={i}
+                  className="w-1 rounded-full transition-all duration-300"
+                  style={{
+                    height: `${Math.max(15, adjustedHeight)}%`,
+                    backgroundColor:
+                      intensity > 7
+                        ? "#f43f5e"
+                        : intensity > 4
+                        ? "#a855f7"
+                        : "#22d3ee",
+                  }}
+                />
+              );
+            })}
+          </div>
+          <div>
+            <div className="text-[10px] font-mono uppercase text-slate-400">
+              Niveau Actuel
+            </div>
+            <div className="text-sm font-bold font-mono text-white flex items-center gap-1.5">
+              <span>{intensity} / 10</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded font-normal ${
+                  intensity >= 8
+                    ? "text-rose-300 bg-rose-950/80 border border-rose-500/40"
+                    : intensity >= 5
+                    ? "text-purple-300 bg-purple-950/80 border border-purple-500/40"
+                    : "text-cyan-300 bg-cyan-950/80 border border-cyan-500/40"
+                }`}
+              >
+                {intensity >= 8
+                  ? "Surcharge vive"
+                  : intensity >= 5
+                  ? "Fatigue progressive"
+                  : "Filtrable"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 1. GRAND SLIDER STYLISÉ (1 À 10) */}
+      <div className="py-6 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <label
+            htmlFor="auditory-slider"
+            className="text-sm font-semibold text-slate-200 flex items-center gap-2"
+          >
+            <Sliders className="w-4 h-4 text-cyan-400" />
+            Curseur d'Intensité Sensorielle :
+          </label>
+          <div className="text-xs text-slate-400 font-mono">
+            Glissez pour explorer les vécus de 1 (Filtrage naturel) à 10 (Shutdown acoustique)
+          </div>
+        </div>
+
+        {/* SLIDER INPUT */}
+        <div className="relative px-2">
+          <input
+            id="auditory-slider"
+            type="range"
+            min="1"
+            max="10"
+            step="1"
+            value={intensity}
+            onChange={(e) => setIntensity(parseInt(e.target.value))}
+            className="w-full cyber-slider h-3 cursor-pointer"
+          />
+
+          {/* TICKS / NUMBERS */}
+          <div className="flex justify-between items-center mt-3 text-xs font-mono select-none px-1">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+              <button
+                key={num}
+                onClick={() => setIntensity(num)}
+                className={`flex flex-col items-center transition-all ${
+                  intensity === num
+                    ? "text-cyan-300 font-bold scale-110"
+                    : "text-slate-500 hover:text-slate-300"
+                }`}
+              >
+                <span
+                  className={`w-6 h-6 flex items-center justify-center rounded-full text-xs transition-colors ${
+                    intensity === num
+                      ? "bg-cyan-500/20 border border-cyan-400 text-cyan-200 shadow-[0_0_8px_rgba(34,211,238,0.5)]"
+                      : "bg-slate-900 border border-slate-800"
+                  }`}
+                >
+                  {num}
+                </span>
+                <span className="text-[10px] hidden md:block mt-1">
+                  {num === 1
+                    ? "Faible"
+                    : num === 5
+                    ? "Moyen"
+                    : num === 8
+                    ? "Douloureux"
+                    : num === 10
+                    ? "Critique"
+                    : ""}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ACTIVE INTENSITY DESCRIPTION CARD */}
+        <div className="mt-6 p-4 sm:p-5 rounded-xl bg-slate-950/70 border border-slate-800/90 relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+            <div className="space-y-1.5 flex-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">
+                  Niveau {currentStat.level} / 10 • {currentStat.shortDescription}
+                </span>
+              </div>
+              <p className="text-sm text-slate-200 leading-relaxed font-sans">
+                {currentStat.detailedSymptom}
+              </p>
+              <div className="pt-2 text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                <Volume2 className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Seuil auditif : {currentStat.auditoryThreshold}</span>
+              </div>
+            </div>
+
+            {/* STRATEGIES PILL BOX */}
+            <div className="md:w-72 bg-slate-900/90 p-3.5 rounded-lg border border-slate-800">
+              <div className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                <Shield className="w-3.5 h-3.5" />
+                Adaptations courantes :
+              </div>
+              <ul className="space-y-1">
+                {currentStat.accompanyingStrategies.map((strat, i) => (
+                  <li
+                    key={i}
+                    className="text-xs text-slate-300 flex items-start gap-1.5"
+                  >
+                    <span className="text-emerald-400 mt-0.5">•</span>
+                    <span>{strat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. STATISTIQUES DE LA COMMUNAUTÉ (VISUEL DYNAMIQUE) */}
+      <div className="py-4 border-t border-slate-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            <BarChart2 className="w-4 h-4 text-purple-400" />
+            <h3 className="text-sm font-bold text-white">
+              Distribution dans la Communauté Neurodivergente
+            </h3>
+          </div>
+          <div className="text-xs font-mono text-cyan-300 bg-cyan-950/60 px-2.5 py-1 rounded-md border border-cyan-500/30">
+            📊 <strong>{currentStat.percentage}%</strong> des utilisateurs se situent au niveau {intensity}
+          </div>
+        </div>
+
+        {/* DISTRIBUTION BAR CHART */}
+        <div className="grid grid-cols-10 gap-1 sm:gap-2 items-end h-28 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((lvl) => {
+            const stat = intensityStatsData[lvl];
+            const isSelected = lvl === intensity;
+            return (
+              <div
+                key={lvl}
+                onClick={() => setIntensity(lvl)}
+                className="group h-full flex flex-col justify-end items-center cursor-pointer"
+              >
+                <div className="text-[10px] font-mono mb-1 text-slate-400 group-hover:text-cyan-300 transition-colors">
+                  {stat.percentage}%
+                </div>
+                <div className="w-full bg-slate-800/60 rounded-t-sm h-full flex items-end overflow-hidden">
+                  <div
+                    className={`w-full transition-all duration-300 rounded-t-sm ${
+                      isSelected
+                        ? "bg-gradient-to-t from-cyan-500 to-purple-400 shadow-[0_0_12px_rgba(34,211,238,0.5)]"
+                        : "bg-slate-700/60 group-hover:bg-slate-600"
+                    }`}
+                    style={{ height: `${(stat.percentage / 25) * 100}%` }}
+                  />
+                </div>
+                <div
+                  className={`mt-1.5 text-[10px] font-mono ${
+                    isSelected ? "font-bold text-cyan-300" : "text-slate-500"
+                  }`}
+                >
+                  N{lvl}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-[11px] text-slate-400 mt-2 font-mono">
+          * Pic remarquable à 7 et 8 chez les adultes non-diagnostiqués dans l'enfance (hypersensibilité compensée par un masquage lourd).
+        </p>
+      </div>
+
+      {/* 3. MUR D'EXPÉRIENCES (COMMUNITY WALL) */}
+      <div className="mt-6 pt-6 border-t border-slate-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <span>Mur d'Expériences Vécues</span>
+              <span className="text-xs font-mono font-normal text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">
+                {filteredExperiences.length} témoignage{filteredExperiences.length > 1 ? "s" : ""}
+              </span>
+            </h3>
+            <p className="text-xs text-slate-400">
+              Ce que ressentent les personnes réelles à ce palier d'intensité.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setFilterMode("current")}
+              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                filterMode === "current"
+                  ? "bg-cyan-950/60 text-cyan-200 border-cyan-500/40"
+                  : "bg-slate-900 text-slate-400 border-slate-800"
+              }`}
+            >
+              Niveau {intensity} uniquement
+            </button>
+            <button
+              onClick={() => setFilterMode("all")}
+              className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                filterMode === "all"
+                  ? "bg-cyan-950/60 text-cyan-200 border-cyan-500/40"
+                  : "bg-slate-900 text-slate-400 border-slate-800"
+              }`}
+            >
+              Tous les vécus
+            </button>
+          </div>
+        </div>
+
+        {/* EXPERIENCES SCROLLABLE CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[460px] overflow-y-auto pr-1">
+          {filteredExperiences.length === 0 ? (
+            <div className="col-span-full py-10 text-center glass-panel-subtle rounded-xl border border-slate-800">
+              <Sparkles className="w-8 h-8 text-cyan-400 mx-auto mb-2 opacity-50" />
+              <p className="text-sm text-slate-300">
+                Aucun témoignage enregistré pour le niveau {intensity} pour l'instant.
+              </p>
+              <p className="text-xs text-slate-500 mt-1">
+                Soyez la première personne à ajouter votre vécu ci-dessous !
+              </p>
+            </div>
+          ) : (
+            filteredExperiences.map((exp) => (
+              <div
+                key={exp.id}
+                className="glass-panel-subtle rounded-xl p-4 border border-slate-800/90 flex flex-col justify-between hover:border-slate-700/80 transition-all group"
+              >
+                <div>
+                  {/* CARD TOP INFO */}
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[11px] font-bold text-slate-200">
+                        {exp.avatarText}
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-white leading-none">
+                          {exp.author}
+                        </div>
+                        <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                          {exp.timestamp}
+                        </div>
+                      </div>
+                    </div>
+
+                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950/70 text-cyan-300 border border-cyan-500/30">
+                      Niv. {exp.intensityLevel}
+                    </span>
+                  </div>
+
+                  {/* CONTEXT PILL */}
+                  <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-slate-900 text-slate-300 border border-slate-800 mb-2.5">
+                    <Tag className="w-3 h-3 text-cyan-400" />
+                    <span>Contexte : {exp.contextTag}</span>
+                  </div>
+
+                  {/* COMMENT TEXT */}
+                  <p className="text-xs text-slate-200 leading-relaxed italic mb-3">
+                    "{exp.text}"
+                  </p>
+                </div>
+
+                <div>
+                  {/* STRATEGY IF AVAILABLE */}
+                  {exp.copingStrategy && (
+                    <div className="p-2 rounded bg-slate-900/80 border border-slate-800/80 text-[11px] text-emerald-300/90 mb-3">
+                      🛡️ <span className="font-semibold text-emerald-400">Ce qui aide :</span>{" "}
+                      {exp.copingStrategy}
+                    </div>
+                  )}
+
+                  {/* BOTTOM ACTIONS (RESONANCE) */}
+                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                    <button
+                      onClick={() => handleToggleResonance(exp.id)}
+                      className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                        exp.userResonated
+                          ? "bg-rose-950/60 text-rose-300 border border-rose-500/40"
+                          : "text-slate-400 hover:text-rose-300 hover:bg-rose-950/20"
+                      }`}
+                    >
+                      <Heart
+                        className={`w-3.5 h-3.5 ${
+                          exp.userResonated
+                            ? "fill-rose-400 text-rose-400"
+                            : "text-slate-400"
+                        }`}
+                      />
+                      <span>Je résonne</span>
+                      <span className="font-mono text-[11px] opacity-80">
+                        ({exp.resonancesCount})
+                      </span>
+                    </button>
+
+                    <span className="text-[10px] font-mono text-slate-500">
+                      Validé par les pairs
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* 4. CHAMP DE SAISIE MODERNE (AJOUT D'EXPÉRIENCE) */}
+      <div className="mt-8 pt-6 border-t border-slate-800/80">
+        <div className="bg-slate-950/80 rounded-xl p-4 sm:p-5 border border-slate-800">
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <h4 className="text-sm font-bold text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-cyan-400" />
+              Ajoutez votre propre expérience pour l'intensité {intensity} / 10
+            </h4>
+            <span className="text-[11px] font-mono text-slate-400">
+              Totalement Anonyme • Espace Sécurisé
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 mb-4">
+            Votre partage aide d'autres adultes en questionnement à briser le sentiment d'isolement.
+          </p>
+
+          <form onSubmit={handleSubmitExperience} className="space-y-3">
+            <div>
+              <textarea
+                value={newText}
+                onChange={(e) => setNewText(e.target.value)}
+                rows={3}
+                placeholder={`Racontez une situation vécue au niveau ${intensity} (ex: le bourdonnement des néons au travail, l'effet d'une fête d'anniversaire, la sensation physique)...`}
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-[11px] font-mono text-slate-400 mb-1">
+                  Contexte environnemental :
+                </label>
+                <div className="flex flex-wrap gap-1.5">
+                  {[
+                    "Open-space",
+                    "Transports",
+                    "Supermarché",
+                    "Repas de famille",
+                    "Chez soi",
+                    "Lieu public",
+                  ].map((ctx) => (
+                    <button
+                      type="button"
+                      key={ctx}
+                      onClick={() => setNewContext(ctx)}
+                      className={`px-2.5 py-1 rounded text-xs transition-colors ${
+                        newContext === ctx
+                          ? "bg-cyan-950 text-cyan-300 border border-cyan-500/50 font-semibold"
+                          : "bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200"
+                      }`}
+                    >
+                      {ctx}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-mono text-slate-400 mb-1">
+                  Ce qui vous soulage (stratégie / outil) :
+                </label>
+                <input
+                  type="text"
+                  value={newCoping}
+                  onChange={(e) => setNewCoping(e.target.value)}
+                  placeholder="Ex: Bouchons d'oreille Loop, fuite aux toilettes, couverture lestée..."
+                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <span className="text-[11px] text-slate-400 flex items-center gap-1">
+                {submittedSuccess ? (
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Votre vécu a été ajouté au mur d'expériences !
+                  </span>
+                ) : (
+                  <span>Les récits respectueux et authentiques sont précieux.</span>
+                )}
+              </span>
+
+              <button
+                type="submit"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all cursor-pointer"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span>Publier mon expérience</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
