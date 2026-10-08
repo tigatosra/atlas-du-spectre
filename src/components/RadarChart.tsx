@@ -83,7 +83,7 @@ export default function RadarChart({
   };
 
   return (
-    <div className="glass-panel rounded-2xl p-5 md:p-6 border border-slate-800/80 shadow-2xl relative overflow-hidden">
+    <div className="glass-panel hud-frame hud-scanline-container rounded-2xl p-5 md:p-6 border border-cyan-500/20 shadow-2xl relative overflow-hidden">
       {/* Background ambient glow (subtle) */}
       {!lowSensoryMode && (
         <div className="absolute -top-24 -left-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -92,13 +92,23 @@ export default function RadarChart({
         <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
       )}
 
+      {/* HUD Telemetry Top Bar */}
+      <div className="flex items-center justify-between text-[9px] font-mono tracking-widest text-cyan-400/80 pb-2 mb-3 border-b border-cyan-500/15">
+        <span className="flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span>HUD.RADAR // COORD_SYSTEM: POLAR_4X</span>
+        </span>
+        <span className="hidden sm:inline">DATA_STREAM: LIVE_PEERS // ENCRYPTION: ANONYMOUS</span>
+        <span>STATUS: [ONLINE]</span>
+      </div>
+
       {/* CARD HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-slate-800/80">
         <div>
           <div className="flex items-center gap-2">
             <span className="inline-block w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
             <h2 className="text-lg font-bold text-white tracking-wide">
-              Matrice Holistique du Spectre
+              {isRelativePerspective ? "Carte du Spectre de Votre Proche" : "Matrice Holistique du Spectre"}
             </h2>
             <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-300 border border-slate-700">
               Modèle Non-Linéaire
@@ -210,6 +220,46 @@ export default function RadarChart({
                   />
                 );
               })}
+
+              {/* OUTER RETICLE TICKS */}
+              <circle
+                cx={center}
+                cy={center}
+                r={radius + 14}
+                fill="none"
+                stroke="rgba(34, 211, 238, 0.2)"
+                strokeWidth="1"
+                strokeDasharray="2,6"
+                className="hud-reticle-spin-slow"
+              />
+
+              {/* POLAR ANGLE TELEMETRY MARKERS */}
+              <text x={center} y={center - radius - 6} fill="#22d3ee" fontSize="8" fontFamily="monospace" textAnchor="middle" opacity="0.7">
+                000° NORTH
+              </text>
+              <text x={center + radius + 18} y={center + 3} fill="#a855f7" fontSize="8" fontFamily="monospace" textAnchor="middle" opacity="0.7">
+                090°
+              </text>
+              <text x={center} y={center + radius + 15} fill="#34d399" fontSize="8" fontFamily="monospace" textAnchor="middle" opacity="0.7">
+                180°
+              </text>
+              <text x={center - radius - 18} y={center + 3} fill="#f59e0b" fontSize="8" fontFamily="monospace" textAnchor="middle" opacity="0.7">
+                270°
+              </text>
+
+              {/* ROTATING RADAR SWEEPER BEAM */}
+              {!lowSensoryMode && (
+                <line
+                  x1={center}
+                  y1={center}
+                  x2={center}
+                  y2={center - radius}
+                  stroke="url(#userRadarGradient)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  className="hud-radar-sweep-beam"
+                />
+              )}
 
               {/* COMMUNITY AVERAGE POLYGON (DASHED GREEN) */}
               {showCommunityAverage && (

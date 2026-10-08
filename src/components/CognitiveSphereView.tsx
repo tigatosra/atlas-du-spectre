@@ -61,7 +61,19 @@ export default function CognitiveSphereView() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* HEADER BANNER */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden shadow-2xl">
+        {/* HUD Micro-Telemetry Bar */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-purple-400/80 mb-4 pb-2 border-b border-purple-500/15">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+            <span>HUD.COGNITION_LAB // NEURAL_PROCESSING_FRAMEWORK</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-slate-500">
+            <span>MODEL: MONOTROPISM_HYPOTHESIS</span>
+            <span className="text-purple-400 font-bold">[ TELEMETRY: CALIBRATED ]</span>
+          </div>
+        </div>
+
         <div className="space-y-2 max-w-3xl relative z-10">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-950/70 border border-purple-500/30 text-purple-300 text-xs font-mono">
             <Brain className="w-3.5 h-3.5 text-purple-400" />
@@ -86,10 +98,10 @@ export default function CognitiveSphereView() {
             <button
               key={concept.id}
               onClick={() => setActiveConceptId(concept.id)}
-              className={`p-4 rounded-xl border text-left transition-all ${
+              className={`hud-frame hud-frame-purple p-4 rounded-xl border text-left transition-all relative overflow-hidden cursor-pointer ${
                 isSelected
-                  ? "bg-slate-900 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
-                  : "bg-slate-950/60 border-slate-800 hover:border-slate-700"
+                  ? "bg-slate-900/90 border-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.25)]"
+                  : "bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
               }`}
             >
               <div className="text-xs font-mono text-purple-400 font-semibold mb-1">
@@ -107,7 +119,7 @@ export default function CognitiveSphereView() {
       </div>
 
       {/* ACTIVE CONCEPT DEEP DIVE CARD */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-6">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-6 shadow-2xl">
         <div className="pb-4 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
             <span className="text-xs font-mono text-purple-400 uppercase tracking-wider block">

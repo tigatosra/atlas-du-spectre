@@ -29,13 +29,21 @@ export default function DiagnosticModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-4xl glass-panel bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-950/85 backdrop-blur-md animate-fade-in">
+      <div className="hud-frame relative w-full max-w-4xl glass-panel bg-slate-900/95 border border-cyan-500/30 rounded-2xl shadow-[0_0_40px_rgba(34,211,238,0.15)] overflow-hidden my-8">
+        {/* HUD MICRO-TELEMETRY STRIP */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 px-5 sm:px-6 py-1 bg-slate-950/95 border-b border-cyan-500/15">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span>HUD.ROADMAP // PROTOCOLE_DIAGNOSTIQUE_ADULTE</span>
+          </div>
+          <span className="hidden sm:inline text-slate-500">AUTONOMY_LEVEL: HIGH // AFFIRMATIVE</span>
+        </div>
         
         {/* MODAL HEADER */}
         <div className="flex items-center justify-between p-5 sm:p-6 border-b border-slate-800 bg-slate-950/80">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30">
+            <div className="p-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 shadow-[0_0_10px_rgba(168,85,247,0.2)]">
               <Compass className="w-6 h-6 text-purple-400" />
             </div>
             <div>

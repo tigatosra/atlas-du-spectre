@@ -41,7 +41,19 @@ export default function CaregiverGuideView({
   return (
     <div className="space-y-8 animate-fade-in">
       {/* HEADER BANNER */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-7 border border-emerald-500/30 bg-gradient-to-br from-slate-900 via-slate-900/90 to-emerald-950/30 relative overflow-hidden">
+      <div className="hud-frame hud-frame-emerald glass-panel rounded-2xl p-6 sm:p-7 border border-emerald-500/30 bg-gradient-to-br from-slate-900 via-slate-900/90 to-emerald-950/30 relative overflow-hidden shadow-2xl">
+        {/* HUD Micro-Telemetry Bar */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-emerald-400/80 mb-4 pb-2 border-b border-emerald-500/15">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>HUD.CARE_INTERFACE // PROCHE_AIDANT_SUPPORT</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-slate-500">
+            <span>PEDAGOGY: NON_CLINICAL</span>
+            <span className="text-emerald-400 font-bold">[ MATRIX: ACTIVE ]</span>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-xs font-mono">
@@ -67,7 +79,7 @@ export default function CaregiverGuideView({
       </div>
 
       {/* 1. L'AUTISME EN 4 ANALOGIES SIMPLES */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-5">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-5 shadow-xl">
         <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
           <Brain className="w-5 h-5 text-cyan-400" />
           <div>

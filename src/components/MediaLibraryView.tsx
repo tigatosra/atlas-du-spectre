@@ -82,7 +82,19 @@ export default function MediaLibraryView() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* HEADER BANNER */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden shadow-2xl">
+        {/* HUD Micro-Telemetry Bar */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-4 pb-2 border-b border-cyan-500/15">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span>HUD.ARCHIVE // MEDIA_DATABASE_CATALOG</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-slate-500">
+            <span>INDEX_SIZE: {mediaLibraryData.length}_ITEMS</span>
+            <span className="text-cyan-400 font-bold">[ REPOSITORY: CURATED ]</span>
+          </div>
+        </div>
+
         <div className="space-y-2 max-w-3xl relative z-10">
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-950/70 border border-purple-500/30 text-purple-300 text-xs font-mono">
             <BookOpen className="w-3.5 h-3.5 text-purple-400" />
@@ -98,7 +110,7 @@ export default function MediaLibraryView() {
       </div>
 
       {/* SEARCH AND FILTERS TOOLBAR */}
-      <div className="glass-panel rounded-2xl p-5 border border-slate-800/80 space-y-4">
+      <div className="hud-frame glass-panel rounded-2xl p-5 border border-slate-800/80 space-y-4 shadow-xl">
         
         {/* SEARCH BAR */}
         <div className="relative">
@@ -218,7 +230,7 @@ export default function MediaLibraryView() {
           filteredResources.map((item) => (
             <div
               key={item.id}
-              className="glass-panel-subtle rounded-xl p-5 border border-slate-800/90 flex flex-col justify-between hover:border-slate-700 transition-all group"
+              className="hud-frame glass-panel-subtle rounded-xl p-5 border border-slate-800/90 flex flex-col justify-between hover:border-cyan-500/40 transition-all group relative overflow-hidden"
             >
               <div>
                 {/* TOP HEADER */}

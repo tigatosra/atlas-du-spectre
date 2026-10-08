@@ -73,10 +73,22 @@ export default function IntentNavigator({ onSelectIntent }: IntentNavigatorProps
   };
 
   return (
-    <section className="glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800/90 relative overflow-hidden">
+    <section className="hud-frame glass-panel rounded-2xl p-5 sm:p-6 border border-slate-800/90 relative overflow-hidden shadow-xl">
+      {/* HUD ROUTER TELEMETRY HEADER */}
+      <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-3 pb-2 border-b border-cyan-500/15">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span>HUD.INTENT_ROUTER // ADAPTIVE_NEURAL_PATHWAY</span>
+        </div>
+        <div className="hidden sm:flex items-center gap-3 text-slate-500">
+          <span>ROUTING_NODES: 04</span>
+          <span>AUTONOMOUS_CALIBRATION: ACTIVE</span>
+        </div>
+      </div>
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="p-1.5 rounded-lg bg-cyan-950/80 border border-cyan-500/30 text-cyan-400">
+          <div className="p-1.5 rounded-lg bg-cyan-950/80 border border-cyan-500/30 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -89,14 +101,14 @@ export default function IntentNavigator({ onSelectIntent }: IntentNavigatorProps
           </div>
         </div>
 
-        <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-900 text-slate-400 border border-slate-800 self-start sm:self-auto">
-          Adaptation Personnalisée
+        <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-slate-900 text-cyan-300 border border-cyan-500/30 self-start sm:self-auto">
+          [ ADAPTATION // DYNAMIQUE ]
         </span>
       </div>
 
       {/* 4 INTERACTIVE INTENT CARDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {intents.map((intent) => {
+        {intents.map((intent, idx) => {
           const Icon = intent.icon;
           const isSelected = selectedIntentId === intent.id;
 
@@ -104,25 +116,30 @@ export default function IntentNavigator({ onSelectIntent }: IntentNavigatorProps
             <button
               key={intent.id}
               onClick={() => handleIntentClick(intent)}
-              className={`p-4 rounded-xl border text-left transition-all flex flex-col justify-between group cursor-pointer ${
+              className={`hud-frame p-4 rounded-xl border text-left transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden ${
                 isSelected
-                  ? "bg-slate-900 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)] scale-[1.01]"
-                  : "bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
+                  ? "bg-slate-900/90 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.25)] scale-[1.01]"
+                  : "bg-slate-950/70 border-slate-800 hover:border-slate-700 hover:bg-slate-900/50"
               }`}
             >
               <div>
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-3 border"
-                  style={{
-                    backgroundColor: `${intent.color}15`,
-                    borderColor: `${intent.color}40`,
-                    color: intent.color,
-                  }}
-                >
-                  <Icon className="w-4 h-4" />
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center border shadow-sm"
+                    style={{
+                      backgroundColor: `${intent.color}15`,
+                      borderColor: `${intent.color}40`,
+                      color: intent.color,
+                    }}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <span className="text-[9px] font-mono text-slate-500">
+                    VECTOR-0{idx + 1}
+                  </span>
                 </div>
 
-                <div className="text-xs font-bold text-white mb-1 leading-snug group-hover:text-cyan-200 transition-colors">
+                <div className="text-xs font-bold text-white mb-1.5 leading-snug group-hover:text-cyan-200 transition-colors">
                   {intent.title}
                 </div>
 
@@ -131,7 +148,7 @@ export default function IntentNavigator({ onSelectIntent }: IntentNavigatorProps
                 </p>
               </div>
 
-              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-medium" style={{ color: intent.color }}>
+              <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono font-medium" style={{ color: intent.color }}>
                 <span>{intent.actionLabel}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>

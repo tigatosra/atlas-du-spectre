@@ -109,16 +109,31 @@ export default function TraitExplorer() {
   const waveHeights = [20, 35, 60, 40, 85, 95, 50, 70, 90, 45, 65, 80, 55, 30];
 
   return (
-    <section className="glass-panel rounded-2xl p-5 md:p-8 border border-slate-800/80 shadow-2xl relative">
+    <section className="hud-frame glass-panel rounded-2xl p-5 md:p-8 border border-slate-800/80 shadow-2xl relative overflow-hidden">
+      {/* HUD TELEMETRY BAR */}
+      <div className="flex items-center justify-between text-[10px] font-mono text-cyan-500/80 tracking-widest pb-3 mb-4 border-b border-cyan-500/15">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span>HUD.MODULE // 02-ACOUSTIC_SPECTRAL_SCANNER</span>
+        </div>
+        <div className="hidden sm:flex items-center gap-4 text-slate-500 text-[10px]">
+          <span>FREQ: 20Hz - 20kHz</span>
+          <span>NEURAL_FILTER: PASSIVE</span>
+          <span className="text-cyan-400 font-bold bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-500/30">
+            CH-AUDITORY // LIVE
+          </span>
+        </div>
+      </div>
+
       {/* SECTION HEADER */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-800/80">
         <div>
           <div className="flex items-center gap-2">
-            <span className="p-1.5 rounded-lg bg-cyan-950/70 border border-cyan-500/40 text-cyan-400">
+            <span className="p-1.5 rounded-lg bg-cyan-950/70 border border-cyan-500/40 text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
               <Headphones className="w-4 h-4" />
             </span>
             <span className="text-xs font-mono uppercase tracking-widest text-cyan-400">
-              Sphère Sensorielle • Trait Explorer
+              Sphère Sensorielle • Trait Explorer HUD
             </span>
             <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-purple-950/60 text-purple-300 border border-purple-500/30">
               Données Collaboratives
@@ -134,9 +149,9 @@ export default function TraitExplorer() {
           </p>
         </div>
 
-        {/* SOUND INTENSITY VISUALIZER BADGE */}
-        <div className="flex items-center gap-3 bg-slate-950/80 px-4 py-2.5 rounded-xl border border-slate-800 self-start lg:self-auto">
-          <div className="flex items-end gap-1 h-7">
+        {/* SOUND INTENSITY TACTICAL HUD ANALYZER BADGE */}
+        <div className="flex items-center gap-3 bg-slate-950/90 px-4 py-2.5 rounded-xl border border-cyan-500/30 self-start lg:self-auto shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+          <div className="flex items-end gap-1 h-8 px-1 py-0.5 bg-slate-900/80 rounded border border-slate-800">
             {waveHeights.map((h, i) => {
               const adjustedHeight = Math.min(
                 100,
@@ -160,11 +175,12 @@ export default function TraitExplorer() {
             })}
           </div>
           <div>
-            <div className="text-[10px] font-mono uppercase text-slate-400">
-              Niveau Actuel
+            <div className="text-[10px] font-mono uppercase text-slate-400 flex items-center gap-1.5">
+              <span>SCAN_AMP :</span>
+              <span className="text-cyan-400 font-bold">{(intensity * 9.8).toFixed(1)} dB</span>
             </div>
             <div className="text-sm font-bold font-mono text-white flex items-center gap-1.5">
-              <span>{intensity} / 10</span>
+              <span>NIVEAU {intensity}/10</span>
               <span
                 className={`text-[10px] px-1.5 py-0.2 rounded font-normal ${
                   intensity >= 8
@@ -251,22 +267,28 @@ export default function TraitExplorer() {
         </div>
 
         {/* ACTIVE INTENSITY DESCRIPTION CARD WITH DUAL LENS TABS */}
-        <div className="mt-6 p-4 sm:p-5 rounded-xl bg-slate-950/70 border border-slate-800/90 relative overflow-hidden">
+        <div className="hud-frame mt-6 p-4 sm:p-5 rounded-xl bg-slate-950/80 border border-cyan-500/30 relative overflow-hidden shadow-[0_0_20px_rgba(34,211,238,0.05)]">
+          {/* Top HUD micro-telemetry */}
+          <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-2 pb-1 border-b border-cyan-500/10">
+            <span>[ SENSORY_VECTOR // CH-01: ACOUSTIC ]</span>
+            <span>TELEMETRY_STATUS: LEVEL_{currentStat.level}_CALIBRATED</span>
+          </div>
           
           {/* LENS SWITCHER BUTTONS */}
           <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">
+              <span className="text-xs font-mono font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
                 Niveau {currentStat.level} / 10 • {currentStat.shortDescription}
               </span>
             </div>
 
-            <div className="flex items-center bg-slate-900 p-0.5 rounded-lg border border-slate-800">
+            <div className="flex items-center bg-slate-900/90 p-0.5 rounded-lg border border-slate-800">
               <button
                 onClick={() => setActiveLens("self")}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
                   activeLens === "self"
-                    ? "bg-cyan-950 text-cyan-300 border border-cyan-500/30"
+                    ? "bg-cyan-950 text-cyan-300 border border-cyan-500/30 shadow-[0_0_8px_rgba(34,211,238,0.2)]"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -277,7 +299,7 @@ export default function TraitExplorer() {
                 onClick={() => setActiveLens("relative")}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-semibold transition-colors ${
                   activeLens === "relative"
-                    ? "bg-emerald-950 text-emerald-300 border border-emerald-500/30"
+                    ? "bg-emerald-950 text-emerald-300 border border-emerald-500/30 shadow-[0_0_8px_rgba(52,211,153,0.2)]"
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
@@ -361,22 +383,22 @@ export default function TraitExplorer() {
         </div>
       </div>
 
-      {/* 2. STATISTIQUES DE LA COMMUNAUTÉ (VISUEL DYNAMIQUE) */}
+      {/* 2. STATISTIQUES DE LA COMMUNAUTÉ (VISUEL DYNAMIQUE HUD) */}
       <div className="py-4 border-t border-slate-800/80">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div className="flex items-center gap-2">
             <BarChart2 className="w-4 h-4 text-purple-400" />
-            <h3 className="text-sm font-bold text-white">
-              Distribution dans la Communauté Neurodivergente
+            <h3 className="text-sm font-bold text-white font-mono tracking-wide">
+              HUD.DISTRIBUTION // Communauté Neurodivergente
             </h3>
           </div>
-          <div className="text-xs font-mono text-cyan-300 bg-cyan-950/60 px-2.5 py-1 rounded-md border border-cyan-500/30">
+          <div className="text-xs font-mono text-cyan-300 bg-cyan-950/60 px-2.5 py-1 rounded-md border border-cyan-500/30 shadow-[0_0_10px_rgba(34,211,238,0.15)]">
             📊 <strong>{currentStat.percentage}%</strong> des utilisateurs se situent au niveau {intensity}
           </div>
         </div>
 
-        {/* DISTRIBUTION BAR CHART */}
-        <div className="grid grid-cols-10 gap-1 sm:gap-2 items-end h-28 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
+        {/* DISTRIBUTION BAR CHART WITH HUD GRID */}
+        <div className="grid grid-cols-10 gap-1 sm:gap-2 items-end h-28 p-3 rounded-xl bg-slate-950/80 border border-slate-800/80 relative overflow-hidden bg-cyber-grid">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((lvl) => {
             const stat = intensityStatsData[lvl];
             const isSelected = lvl === intensity;
@@ -384,7 +406,7 @@ export default function TraitExplorer() {
               <div
                 key={lvl}
                 onClick={() => setIntensity(lvl)}
-                className="group h-full flex flex-col justify-end items-center cursor-pointer"
+                className="group h-full flex flex-col justify-end items-center cursor-pointer relative z-10"
               >
                 <div className="text-[10px] font-mono mb-1 text-slate-400 group-hover:text-cyan-300 transition-colors">
                   {stat.percentage}%
@@ -393,7 +415,7 @@ export default function TraitExplorer() {
                   <div
                     className={`w-full transition-all duration-300 rounded-t-sm ${
                       isSelected
-                        ? "bg-gradient-to-t from-cyan-500 to-purple-400 shadow-[0_0_12px_rgba(34,211,238,0.5)]"
+                        ? "bg-gradient-to-t from-cyan-500 to-purple-400 shadow-[0_0_14px_rgba(34,211,238,0.6)]"
                         : "bg-slate-700/60 group-hover:bg-slate-600"
                     }`}
                     style={{ height: `${(stat.percentage / 25) * 100}%` }}
@@ -410,8 +432,9 @@ export default function TraitExplorer() {
             );
           })}
         </div>
-        <p className="text-[11px] text-slate-400 mt-2 font-mono">
-          * Pic remarquable à 7 et 8 chez les adultes non-diagnostiqués dans l'enfance (hypersensibilité compensée par un masquage lourd).
+        <p className="text-[11px] text-slate-400 mt-2 font-mono flex items-center justify-between">
+          <span>* Pic remarquable à 7 et 8 chez les adultes non-diagnostiqués dans l'enfance.</span>
+          <span className="text-[10px] text-slate-500 hidden sm:inline">[ POPULATION_SAMPLE: N=14,280 ]</span>
         </p>
       </div>
 
@@ -467,10 +490,10 @@ export default function TraitExplorer() {
               </p>
             </div>
           ) : (
-            filteredExperiences.map((exp) => (
+            filteredExperiences.map((exp, expIdx) => (
               <div
                 key={exp.id}
-                className="glass-panel-subtle rounded-xl p-4 border border-slate-800/90 flex flex-col justify-between hover:border-slate-700/80 transition-all group"
+                className="hud-frame glass-panel-subtle rounded-xl p-4 border border-slate-800/90 flex flex-col justify-between hover:border-cyan-500/40 transition-all group"
               >
                 <div>
                   {/* CARD TOP INFO */}
@@ -489,9 +512,14 @@ export default function TraitExplorer() {
                       </div>
                     </div>
 
-                    <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950/70 text-cyan-300 border border-cyan-500/30">
-                      Niv. {exp.intensityLevel}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[9px] font-mono text-slate-500 hidden sm:inline">
+                        #REC-{String(expIdx + 1).padStart(2, "0")}
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950/70 text-cyan-300 border border-cyan-500/30">
+                        Niv. {exp.intensityLevel}
+                      </span>
+                    </div>
                   </div>
 
                   {/* CONTEXT PILL & PERSPECTIVE BADGE */}
@@ -563,15 +591,19 @@ export default function TraitExplorer() {
         </div>
       </div>
 
-      {/* 4. CHAMP DE SAISIE MODERNE (AJOUT D'EXPÉRIENCE) */}
+      {/* 4. CHAMP DE SAISIE MODERNE (AJOUT D'EXPÉRIENCE - CONSOLE HUD) */}
       <div className="mt-8 pt-6 border-t border-slate-800/80">
-        <div className="bg-slate-950/80 rounded-xl p-4 sm:p-5 border border-slate-800">
+        <div className="hud-frame bg-slate-950/90 rounded-xl p-4 sm:p-5 border border-cyan-500/30 shadow-[0_0_20px_rgba(34,211,238,0.06)]">
+          <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-2 pb-1 border-b border-cyan-500/10">
+            <span>[ CONSOLE // TRANSMISSION_ANONYME ]</span>
+            <span>SECURE_PEER_FEED: ENCRYPTED</span>
+          </div>
           <div className="flex items-center justify-between gap-2 mb-2">
             <h4 className="text-sm font-bold text-white flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-cyan-400" />
               Ajoutez votre propre expérience pour l'intensité {intensity} / 10
             </h4>
-            <span className="text-[11px] font-mono text-slate-400">
+            <span className="text-[11px] font-mono text-slate-400 hidden sm:inline">
               Totalement Anonyme • Espace Sécurisé
             </span>
           </div>

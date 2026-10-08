@@ -72,7 +72,19 @@ export default function SensorySphereView() {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* HEADER BANNER */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden shadow-2xl">
+        {/* HUD Micro-Telemetry Bar */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-4 pb-2 border-b border-cyan-500/15">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span>HUD.SENSORY_LAB // 4_CHANNELS_MONITOR</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-slate-500">
+            <span>FILTER_COEFFICIENT: 0.14</span>
+            <span className="text-cyan-400 font-bold">[ TELEMETRY: REALTIME ]</span>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
@@ -90,7 +102,7 @@ export default function SensorySphereView() {
           </div>
 
           {/* SENSORY SATURATION METER */}
-          <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-800 shrink-0 text-center sm:text-left">
+          <div className="hud-frame bg-slate-950/90 p-4 rounded-xl border border-cyan-500/30 shrink-0 text-center sm:text-left shadow-[0_0_15px_rgba(34,211,238,0.1)]">
             <div className="text-[11px] font-mono uppercase text-slate-400 mb-1">
               {isRelativePerspective ? "Charge sensorielle estimée du proche" : "Votre Charge Sensorielle Globale"}
             </div>
@@ -128,9 +140,9 @@ export default function SensorySphereView() {
             <button
               key={item.id}
               onClick={() => setActiveSensoryId(item.id)}
-              className={`p-4 rounded-xl border text-left transition-all ${
+              className={`hud-frame p-4 rounded-xl border text-left transition-all relative overflow-hidden cursor-pointer ${
                 isSelected
-                  ? "bg-slate-900 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                  ? "bg-slate-900/90 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.25)]"
                   : "bg-slate-950/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900/40"
               }`}
             >
@@ -154,7 +166,7 @@ export default function SensorySphereView() {
       </div>
 
       {/* ACTIVE SENSORY CHANNEL DEEP DIVE */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-6">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-6 shadow-2xl">
         
         {/* TOP CHANNEL SUMMARY & LIVE INTENSITY SLIDER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-800">

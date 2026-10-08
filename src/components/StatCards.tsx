@@ -82,12 +82,12 @@ export default function StatCards() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card) => {
+      {cards.map((card, idx) => {
         const Icon = card.icon;
         return (
           <div
             key={card.id}
-            className={`glass-panel rounded-xl p-4 sm:p-5 border border-slate-800/80 transition-all hover:border-slate-700 relative overflow-hidden group ${
+            className={`glass-panel hud-frame rounded-xl p-4 sm:p-5 border border-slate-800/90 transition-all hover:border-cyan-500/40 relative overflow-hidden group ${
               !lowSensoryMode ? "hover:-translate-y-0.5" : ""
             }`}
           >
@@ -99,8 +99,14 @@ export default function StatCards() {
               }}
             />
 
+            {/* HUD Telemetry Sub-Tag */}
+            <div className="flex items-center justify-between text-[9px] font-mono text-slate-500 pb-1 mb-2">
+              <span>[ CH-0{idx + 1} // TELEMETRY ]</span>
+              <span className="text-cyan-400/80">● SYNC</span>
+            </div>
+
             <div className="flex items-center justify-between gap-2 mb-3">
-              <span className="text-xs font-medium text-slate-400">
+              <span className="text-xs font-medium text-slate-300">
                 {card.title}
               </span>
               <div

@@ -47,8 +47,29 @@ export default function Header({
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl">
+      {/* HUD SYSTEM STATUS TELEMETRY STRIP */}
+      <div className="w-full bg-slate-950/95 border-b border-cyan-500/15 px-4 sm:px-6 lg:px-8 py-0.5 text-[10px] font-mono flex items-center justify-between text-slate-500 select-none">
+        <div className="flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <span className="text-cyan-400 font-bold">SYS.VER // 2.4.0-HUD</span>
+          <span className="hidden sm:inline text-slate-600">|</span>
+          <span className="hidden sm:inline">SPECTRE_GRID: 8-AXIS_ACTIVE</span>
+        </div>
+        <div className="hidden md:flex items-center gap-4 text-slate-400">
+          <span>PEER_TELEMETRY: SYNC 99.8%</span>
+          <span>PROTOCOL: NEURO-AFFIRMATIVE</span>
+          <span className="text-cyan-400/80 font-semibold">[ LAT: 0.12ms ]</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-slate-400">MODE:</span>
+          <span className={`font-semibold ${lowSensoryMode ? "text-emerald-400" : "text-cyan-400"}`}>
+            {lowSensoryMode ? "LOW_STIM" : "FULL_IMMERSIVE"}
+          </span>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
         
         {/* LOGO & BRANDING */}
         <div className="flex items-center gap-3">
@@ -56,9 +77,9 @@ export default function Header({
             onClick={() => setActiveTab("dashboard")}
             className="flex items-center gap-3 text-left group cursor-pointer"
           >
-            <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-emerald-500/20 border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+            <div className="hud-frame relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-emerald-500/20 border border-cyan-400/40 shadow-[0_0_15px_rgba(34,211,238,0.25)]">
               <svg
-                className="w-6 h-6 text-cyan-400 group-hover:scale-105 transition-transform"
+                className="w-6 h-6 text-cyan-400 group-hover:scale-110 transition-transform"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -76,8 +97,8 @@ export default function Header({
                 <span className="text-xl font-bold tracking-tight text-white font-sans bg-clip-text text-transparent bg-gradient-to-r from-cyan-200 via-white to-purple-200">
                   Atlas du Spectre
                 </span>
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-950/70 text-cyan-300 border border-cyan-500/30 uppercase tracking-wider">
-                  Neuro-Affirmatif
+                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-cyan-950/70 text-cyan-300 border border-cyan-500/40 uppercase tracking-wider">
+                  HUD v2.4
                 </span>
               </div>
               <p className="text-xs text-slate-400 hidden sm:block">
@@ -88,7 +109,7 @@ export default function Header({
         </div>
 
         {/* NAVIGATION LINKS (DESKTOP) */}
-        <nav className="hidden xl:flex items-center space-x-1 bg-slate-900/60 p-1.5 rounded-xl border border-slate-800/80">
+        <nav className="hidden xl:flex items-center space-x-1 bg-slate-900/70 p-1.5 rounded-xl border border-slate-800/90 shadow-inner">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -98,12 +119,12 @@ export default function Header({
                 onClick={() => setActiveTab(item.id)}
                 className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 shadow-[0_0_12px_rgba(34,211,238,0.15)]"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                    ? "bg-cyan-500/20 text-cyan-200 border border-cyan-500/40 shadow-[0_0_12px_rgba(34,211,238,0.2)] font-semibold"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? "text-cyan-400" : "text-slate-400"}`} />
-                {item.label}
+                <span>{isActive ? `[ ${item.label} ]` : item.label}</span>
               </button>
             );
           })}

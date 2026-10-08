@@ -48,11 +48,15 @@ export default function TheorySidebar({
   return (
     <aside className="space-y-5">
       {/* 1. CALL TO ACTION: EXPLORER LES PARCOURS DIAGNOSTIQUES */}
-      <div className="glass-panel rounded-2xl p-5 border border-cyan-500/30 bg-gradient-to-br from-slate-900 via-slate-900/90 to-purple-950/40 relative overflow-hidden shadow-[0_0_25px_rgba(34,211,238,0.15)] group">
+      <div className="hud-frame glass-panel rounded-2xl p-5 border border-cyan-500/40 bg-gradient-to-br from-slate-900 via-slate-900/90 to-purple-950/40 relative overflow-hidden shadow-[0_0_25px_rgba(34,211,238,0.18)] group">
+        <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-2 pb-1 border-b border-cyan-500/10">
+          <span>[ HUD.NAV // DIAGNOSTIC_PATHWAY ]</span>
+          <span>STAGE: ADULT_SUPPORT</span>
+        </div>
         <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none" />
 
         <div className="flex items-center gap-2 mb-2">
-          <span className="p-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">
+          <span className="p-2 rounded-xl bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
             <Compass className="w-5 h-5 text-cyan-400" />
           </span>
           <div>
@@ -95,16 +99,16 @@ export default function TheorySidebar({
       </div>
 
       {/* 2. THEORIES & CONCEPTS ESSENTIELS WIDGETS */}
-      <div className="glass-panel rounded-2xl p-5 border border-slate-800/80 shadow-xl">
+      <div className="hud-frame glass-panel rounded-2xl p-5 border border-slate-800/80 shadow-xl">
         <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-purple-400" />
-            <h3 className="text-sm font-bold text-white">
-              Théories Neuro-Affirmatives
+            <h3 className="text-sm font-bold text-white font-mono">
+              HUD.THEORIES // Modèles Neuro-Affirmatifs
             </h3>
           </div>
-          <span className="text-[10px] font-mono text-slate-400">
-            Hors du DSM
+          <span className="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-500/20">
+            [ HORS_DSM ]
           </span>
         </div>
 

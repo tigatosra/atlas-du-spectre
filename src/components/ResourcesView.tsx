@@ -98,7 +98,19 @@ Je reste à votre entière disposition pour échanger lors d'un entretien.`,
   return (
     <div className="space-y-8 animate-fade-in">
       {/* HEADER BANNER */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden shadow-2xl">
+        {/* HUD Micro-Telemetry Bar */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-4 pb-2 border-b border-cyan-500/15">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span>HUD.TOOLKIT // CRISIS_SUPPORT_SYSTEM</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-slate-500">
+            <span>OFFLINE_CACHE: SECURED</span>
+            <span className="text-cyan-400 font-bold">[ PROTOCOL: DISPATCH_READY ]</span>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
@@ -126,7 +138,7 @@ Je reste à votre entière disposition pour échanger lors d'un entretien.`,
       </div>
 
       {/* 1. INTERACTIVE PASSPORT CARD GENERATOR */}
-      <div className="glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-6">
+      <div className="hud-frame glass-panel rounded-2xl p-6 sm:p-8 border border-slate-800/90 space-y-6 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <div>
             <div className="flex items-center gap-2">

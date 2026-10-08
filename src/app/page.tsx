@@ -88,7 +88,19 @@ export default function HomePage() {
             />
 
             {/* 2. BANNER D'ACCUEIL & MANIFESTE NEURO-AFFIRMATIF */}
-            <section className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
+            <section className="hud-frame glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden shadow-2xl">
+              {/* HUD Micro-Telemetry Bar */}
+              <div className="flex items-center justify-between text-[10px] font-mono text-cyan-400/80 mb-4 pb-2 border-b border-cyan-500/15">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  <span>HUD.OVERVIEW // MISSION: CARTOGRAPHIE_NEURO_AFFIRMATIVE</span>
+                </div>
+                <div className="hidden sm:flex items-center gap-3 text-slate-500">
+                  <span>SPECTRUM_ENGINE: ACTIVE</span>
+                  <span className="text-cyan-400 font-bold">[ MATRIX_ONLINE ]</span>
+                </div>
+              </div>
+
               {/* Subtle accent glow */}
               <div className="absolute top-0 right-1/4 w-96 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
               <div className="absolute bottom-0 right-10 w-64 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -224,7 +236,7 @@ export default function HomePage() {
                 </div>
 
                 {/* ACCÈS DIRECT AUX ESPACES THÉMATIQUES */}
-                <section className="glass-panel rounded-2xl p-6 border border-slate-800/80">
+                <section className="hud-frame glass-panel rounded-2xl p-6 border border-slate-800/80 shadow-xl">
                   <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
                     <div>
                       <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -236,17 +248,18 @@ export default function HomePage() {
                       </p>
                     </div>
                     <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
-                      Modules Prêts
+                      [ STATUS: 4_MODULES_ONLINE ]
                     </span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     <button
                       onClick={() => setActiveTab("sensorielle")}
-                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-400 hover:bg-slate-900 transition-all text-left group"
+                      className="hud-frame p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-cyan-400 hover:bg-slate-900 transition-all text-left group cursor-pointer relative overflow-hidden"
                     >
-                      <div className="text-xs font-bold text-cyan-300 mb-1 group-hover:text-cyan-200">
-                        Sphère Sensorielle ➔
+                      <div className="text-xs font-bold text-cyan-300 mb-1 group-hover:text-cyan-200 flex items-center justify-between">
+                        <span>Sphère Sensorielle</span>
+                        <span className="text-[10px] font-mono text-slate-500">MOD-01</span>
                       </div>
                       <p className="text-[11px] text-slate-400 leading-snug">
                         Audition, vision/néons, textures, proprioception et saturation.
@@ -255,10 +268,11 @@ export default function HomePage() {
 
                     <button
                       onClick={() => setActiveTab("cognitive")}
-                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-purple-400 hover:bg-slate-900 transition-all text-left group"
+                      className="hud-frame hud-frame-purple p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-purple-400 hover:bg-slate-900 transition-all text-left group cursor-pointer relative overflow-hidden"
                     >
-                      <div className="text-xs font-bold text-purple-300 mb-1 group-hover:text-purple-200">
-                        Sphère Cognitive ➔
+                      <div className="text-xs font-bold text-purple-300 mb-1 group-hover:text-purple-200 flex items-center justify-between">
+                        <span>Sphère Cognitive</span>
+                        <span className="text-[10px] font-mono text-slate-500">MOD-02</span>
                       </div>
                       <p className="text-[11px] text-slate-400 leading-snug">
                         Monotropisme, simulateur de Cuillères et Double Empathie.
@@ -267,10 +281,11 @@ export default function HomePage() {
 
                     <button
                       onClick={() => setActiveTab("proches")}
-                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-400 hover:bg-slate-900 transition-all text-left group"
+                      className="hud-frame hud-frame-emerald p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-emerald-400 hover:bg-slate-900 transition-all text-left group cursor-pointer relative overflow-hidden"
                     >
-                      <div className="text-xs font-bold text-emerald-300 mb-1 group-hover:text-emerald-200">
-                        Guide des Proches ➔
+                      <div className="text-xs font-bold text-emerald-300 mb-1 group-hover:text-emerald-200 flex items-center justify-between">
+                        <span>Guide des Proches</span>
+                        <span className="text-[10px] font-mono text-slate-500">MOD-03</span>
                       </div>
                       <p className="text-[11px] text-slate-400 leading-snug">
                         4 analogies simples, gestion du meltdown/shutdown et FAQ famille.
@@ -279,10 +294,11 @@ export default function HomePage() {
 
                     <button
                       onClick={() => setActiveTab("mediatheque")}
-                      className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-400 hover:bg-slate-900 transition-all text-left group"
+                      className="hud-frame p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 hover:border-amber-400 hover:bg-slate-900 transition-all text-left group cursor-pointer relative overflow-hidden"
                     >
-                      <div className="text-xs font-bold text-amber-300 mb-1 group-hover:text-amber-200">
-                        Médiathèque Complète ➔
+                      <div className="text-xs font-bold text-amber-300 mb-1 group-hover:text-amber-200 flex items-center justify-between">
+                        <span>Médiathèque</span>
+                        <span className="text-[10px] font-mono text-slate-500">MOD-04</span>
                       </div>
                       <p className="text-[11px] text-slate-400 leading-snug">
                         Livres, audiobooks, documentaires Arte, podcasts et tests.

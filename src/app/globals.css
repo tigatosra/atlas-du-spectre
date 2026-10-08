@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #060913;
-  --foreground: #f1f5f9;
-  --panel-bg: rgba(13, 20, 36, 0.72);
-  --panel-border: rgba(56, 189, 248, 0.15);
+  --background: #040711;
+  --foreground: #e2e8f0;
+  --panel-bg: rgba(10, 16, 31, 0.78);
+  --panel-border: rgba(34, 211, 238, 0.18);
   --accent-cyan: #22d3ee;
   --accent-purple: #c084fc;
   --accent-mint: #34d399;
@@ -18,37 +18,211 @@ body {
   min-height: 100vh;
 }
 
-/* Glassmorphism Classes */
+/* Glassmorphism & Cyber Panels */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 17, 34, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.16);
+  position: relative;
 }
 
 .glass-panel-subtle {
-  background: rgba(15, 23, 42, 0.45);
+  background: rgba(10, 17, 34, 0.5);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
 }
 
-.glass-glow-cyan {
-  box-shadow: 0 0 25px -5px rgba(34, 211, 238, 0.18);
-  border-color: rgba(34, 211, 238, 0.3);
+/* HUD Corner Brackets Effect */
+.hud-frame {
+  position: relative;
 }
 
-.glass-glow-purple {
-  box-shadow: 0 0 25px -5px rgba(168, 85, 247, 0.18);
-  border-color: rgba(168, 85, 247, 0.3);
+.hud-frame::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #22d3ee;
+  border-left: 2px solid #22d3ee;
+  pointer-events: none;
+  z-index: 10;
 }
 
-/* Low Sensory Mode (Accessible, calm, no excessive motion or blinding glow) */
+.hud-frame::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid #22d3ee;
+  border-right: 2px solid #22d3ee;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hud-frame-purple::before {
+  border-color: #c084fc;
+}
+.hud-frame-purple::after {
+  border-color: #c084fc;
+}
+
+.hud-frame-emerald::before {
+  border-color: #34d399;
+}
+.hud-frame-emerald::after {
+  border-color: #34d399;
+}
+
+/* HUD Scanline Beam */
+@keyframes hud-scanline {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+
+.hud-scanline-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.hud-scanline-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+  box-shadow: 0 0 15px #22d3ee;
+  animation: hud-scanline 6s linear infinite;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* HUD Radar Sweeper */
+@keyframes hud-radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.hud-radar-sweep-beam {
+  transform-origin: 160px 160px;
+  animation: hud-radar-sweep 8s linear infinite;
+  pointer-events: none;
+}
+
+/* HUD Reticle Rotate */
+@keyframes hud-reticle-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hud-reticle-spin-slow {
+  animation: hud-reticle-spin 25s linear infinite;
+}
+
+/* HUD Pulse Glows */
+@keyframes hud-pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.hud-glow-pulse {
+  animation: hud-pulse-glow 3s ease-in-out infinite;
+}
+
+/* HUD Chamfered Tech Corners */
+.hud-chamfer {
+  clip-path: polygon(
+    0 8px,
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px)
+  );
+}
+
+/* HUD Reticle Crosshair Accent */
+.hud-crosshair {
+  position: relative;
+}
+.hud-crosshair::before {
+  content: "+";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  color: rgba(34, 211, 238, 0.4);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* HUD Interactive Frame Glow */
+.hud-frame:hover::before {
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+.hud-frame:hover::after {
+  border-color: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+/* Low Sensory Mode (Strict accessibility compliance) */
 .low-sensory * {
   animation: none !important;
   transition-duration: 0.05s !important;
   box-shadow: none !important;
   text-shadow: none !important;
+}
+
+.low-sensory .hud-scanline-container::after {
+  display: none !important;
+}
+
+.low-sensory .hud-radar-sweep-beam {
+  display: none !important;
+}
+
+.low-sensory .hud-crosshair::before {
+  display: none !important;
+}
+
+.low-sensory .hud-frame:hover::before,
+.low-sensory .hud-frame:hover::after {
+  box-shadow: none !important;
 }
 
 .low-sensory .glass-panel,
@@ -61,18 +235,18 @@ body {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(10, 15, 29, 0.6);
+  background: rgba(4, 7, 17, 0.8);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.25);
+  background: rgba(34, 211, 238, 0.25);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.45);
+  background: rgba(34, 211, 238, 0.5);
 }
 
 /* Stylized Range Slider */
@@ -102,13 +276,13 @@ input[type="range"].cyber-slider::-webkit-slider-thumb {
   border-radius: 50%;
   background: #ffffff;
   border: 3px solid #22d3ee;
-  box-shadow: 0 0 14px rgba(34, 211, 238, 0.8);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.85);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 input[type="range"].cyber-slider::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  box-shadow: 0 0 20px rgba(34, 211, 238, 1);
+  box-shadow: 0 0 24px rgba(34, 211, 238, 1);
 }
 
 .low-sensory input[type="range"].cyber-slider::-webkit-slider-thumb {
@@ -117,10 +291,17 @@ input[type="range"].cyber-slider::-webkit-slider-thumb:hover {
   border-color: #94a3b8 !important;
 }
 
-/* Cyber Grid Background Pattern */
+/* Cyber Grid Background Pattern with Micro-Crosses */
 .bg-cyber-grid {
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(rgba(34, 211, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* HUD Telemetry Font styling */
+.hud-telemetry {
+  font-family: var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
