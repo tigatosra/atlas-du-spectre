@@ -7,8 +7,12 @@ import RadarChart from "../components/RadarChart";
 import TraitExplorer from "../components/TraitExplorer";
 import TheorySidebar from "../components/TheorySidebar";
 import DiagnosticModal from "../components/DiagnosticModal";
+import SensorySphereView from "../components/SensorySphereView";
+import CognitiveSphereView from "../components/CognitiveSphereView";
+import ResourcesView from "../components/ResourcesView";
 import { initialRadarAxes } from "../data/mockData";
 import { RadarAxis } from "../types/spectrum";
+import { usePerspective } from "../context/PerspectiveContext";
 import {
   Compass,
   Sparkles,
@@ -20,12 +24,15 @@ import {
   Activity,
   ArrowRight,
   HelpCircle,
+  HeartHandshake,
+  UserCheck,
 } from "lucide-react";
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<string>("dashboard");
   const [axes, setAxes] = useState<RadarAxis[]>(initialRadarAxes);
   const [isDiagnosticModalOpen, setIsDiagnosticModalOpen] = useState<boolean>(false);
+  const { perspective, setPerspective, isAutisticPerspective, isRelativePerspective } = usePerspective();
 
   // Handle axis modification from the radar or sliders
   const handleAxisChange = (axisId: string, newValue: number) => {
@@ -53,158 +60,209 @@ export default function HomePage() {
       {/* MAIN CONTAINER */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
         
-        {/* BANNER D'ACCUEIL & MANIFESTE NEURO-AFFIRMATIF */}
-        <section className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
-          {/* Subtle accent glow */}
-          <div className="absolute top-0 right-1/4 w-96 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 right-10 w-64 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+        {/* CONDITIONAL RENDERING ACCORDING TO ACTIVE TAB */}
+        {activeTab === "sensorielle" && <SensorySphereView />}
 
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
-            <div className="space-y-2 max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300 text-xs font-mono">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Exploration Adulte • Données de Pairs Validées</span>
-              </div>
+        {activeTab === "cognitive" && <CognitiveSphereView />}
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Le spectre n'est pas une ligne,{" "}
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-indigo-300 to-purple-300">
-                  c'est une constellation.
-                </span>
-              </h1>
+        {activeTab === "ressources" && (
+          <ResourcesView onOpenDiagnosticModal={() => setIsDiagnosticModalOpen(true)} />
+        )}
 
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                Le modèle clinique traditionnel (DSM-5) a été conçu à travers le regard extérieur de personnes neurotypiques.
-                <strong> Atlas du Spectre</strong> replace l'expérience subjective et le vécu au centre : cartographiez vos traits,
-                comparez vos seuils sensoriels avec la communauté et apprenez à démasquer en sécurité.
-              </p>
-            </div>
+        {activeTab === "dashboard" && (
+          <>
+            {/* BANNER D'ACCUEIL & MANIFESTE NEURO-AFFIRMATIF AVEC SWITCH DE PERSPECTIVE */}
+            <section className="glass-panel rounded-2xl p-6 sm:p-7 border border-slate-800/90 relative overflow-hidden">
+              {/* Subtle accent glow */}
+              <div className="absolute top-0 right-1/4 w-96 h-32 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 right-10 w-64 h-32 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            {/* QUICK ACTIONS BANNER */}
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
-              <button
-                onClick={() => setIsDiagnosticModalOpen(true)}
-                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-all cursor-pointer"
-              >
-                <Compass className="w-4 h-4 text-cyan-200" />
-                <span>Parcours Diagnostiques</span>
-                <ArrowRight className="w-4 h-4 text-white" />
-              </button>
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                <div className="space-y-3 max-w-3xl">
+                  
+                  {/* DUAL PERSPECTIVE BANNER SELECTOR */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-mono text-slate-400">
+                      Vous explorez en tant que :
+                    </span>
+                    <div className="inline-flex items-center bg-slate-900/90 p-0.5 rounded-lg border border-slate-800">
+                      <button
+                        onClick={() => setPerspective("autiste")}
+                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                          isAutisticPerspective
+                            ? "bg-cyan-950 text-cyan-300 border border-cyan-500/40 shadow-[0_0_8px_rgba(34,211,238,0.3)]"
+                            : "text-slate-400 hover:text-slate-200"
+                        }`}
+                      >
+                        <UserCheck className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Adulte en questionnement / Autiste</span>
+                      </button>
+                      <button
+                        onClick={() => setPerspective("proche")}
+                        className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold transition-all ${
+                          isRelativePerspective
+                            ? "bg-emerald-950 text-emerald-300 border border-emerald-500/40 shadow-[0_0_8px_rgba(52,211,153,0.3)]"
+                            : "text-slate-400 hover:text-slate-200"
+                        }`}
+                      >
+                        <HeartHandshake className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Proche, Partenaire ou Parent</span>
+                      </button>
+                    </div>
+                  </div>
 
-              <button
-                onClick={() => {
-                  const traitSection = document.getElementById("trait-explorer-section");
-                  if (traitSection) {
-                    traitSection.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors"
-              >
-                <Sliders className="w-4 h-4 text-cyan-400" />
-                <span>Tester la Sensibilité Auditive</span>
-              </button>
-            </div>
-          </div>
-        </section>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                    {isRelativePerspective ? (
+                      <>
+                        Comprendre et accompagner{" "}
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-teal-300 to-cyan-300">
+                          votre proche sans le surcharger.
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        Le spectre n'est pas une ligne,{" "}
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-indigo-300 to-purple-300">
+                          c'est une constellation.
+                        </span>
+                      </>
+                    )}
+                  </h1>
 
-        {/* 1. CARTES DE STATISTIQUES RAPIDES */}
-        <section>
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5 text-cyan-400" />
-              Indicateurs & Météo Communautaire
-            </h2>
-            <span className="text-[11px] font-mono text-cyan-400">
-              Mise à jour en temps réel
-            </span>
-          </div>
-          <StatCards />
-        </section>
-
-        {/* 2. GRILLE ASYMÉTRIQUE PRINCIPALE (TABLEAU DE BORD) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* COLONNE GAUCHE / PRINCIPALE (8 COLONNES) */}
-          <div className="lg:col-span-8 space-y-8">
-            
-            {/* CARTE CENTRALE : GRAPHIQUE RADAR MULTIDIMENSIONNEL */}
-            <section id="radar-section">
-              <RadarChart
-                axes={axes}
-                onAxisChange={handleAxisChange}
-                onResetAxes={handleResetAxes}
-              />
-            </section>
-
-            {/* SECTION INTERACTIVE : EXPLORATION D'UN TRAIT (SENSIBILITÉ AUDITIVE) */}
-            <div id="trait-explorer-section">
-              <TraitExplorer />
-            </div>
-
-            {/* COMPLÉMENT : AUTRES SPHÈRES DU SPECTRE EN UN COUP D'ŒIL */}
-            <section className="glass-panel rounded-2xl p-6 border border-slate-800/80">
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-                <div>
-                  <h3 className="text-base font-bold text-white flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-cyan-400" />
-                    Autres Traits du Spectre en Exploration
-                  </h3>
-                  <p className="text-xs text-slate-400">
-                    Chaque sphère dispose de son module interactif étalonné par les pairs.
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    {isRelativePerspective
+                      ? "Ce tableau de bord vous aide à décoder les réactions de votre proche, à anticiper les surcharges sensorielles et à créer un environnement de confiance réciproque."
+                      : "Le modèle clinique traditionnel (DSM-5) a été conçu à travers le regard extérieur de personnes neurotypiques. Atlas du Spectre replace l'expérience subjective et le vécu au centre : cartographiez vos traits, comparez vos seuils sensoriels avec la communauté et apprenez à démasquer en sécurité."}
                   </p>
                 </div>
-                <span className="text-xs font-mono text-purple-300 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-500/30">
-                  Prochaines versions
-                </span>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 transition-colors">
-                  <div className="text-xs font-bold text-cyan-300 mb-1">
-                    Texture & Tactile
-                  </div>
-                  <p className="text-[11px] text-slate-300 leading-snug">
-                    Étiquettes de vêtements, matières synthétiques, sensibilité à la température et au toucher léger.
-                  </p>
-                  <div className="mt-2 text-[10px] font-mono text-slate-400">
-                    6 120 vécus collectés
-                  </div>
-                </div>
+                {/* QUICK ACTIONS BANNER */}
+                <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
+                  <button
+                    onClick={() => setIsDiagnosticModalOpen(true)}
+                    className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-all cursor-pointer"
+                  >
+                    <Compass className="w-4 h-4 text-cyan-200" />
+                    <span>Parcours Diagnostiques</span>
+                    <ArrowRight className="w-4 h-4 text-white" />
+                  </button>
 
-                <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 transition-colors">
-                  <div className="text-xs font-bold text-purple-300 mb-1">
-                    Tunnel Attentionnel (Hyperfocus)
-                  </div>
-                  <p className="text-[11px] text-slate-300 leading-snug">
-                    Capacité d'absorption phénoménale dans un intérêt spécifique et coût du décrochage involontaire.
-                  </p>
-                  <div className="mt-2 text-[10px] font-mono text-slate-400">
-                    7 890 vécus collectés
-                  </div>
-                </div>
-
-                <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 transition-colors">
-                  <div className="text-xs font-bold text-emerald-300 mb-1">
-                    Camouflage & Contact Visuel
-                  </div>
-                  <p className="text-[11px] text-slate-300 leading-snug">
-                    Regarder entre les deux yeux, mémoriser des expressions faciales et fatigue oculaire liée au masque.
-                  </p>
-                  <div className="mt-2 text-[10px] font-mono text-slate-400">
-                    9 240 vécus collectés
-                  </div>
+                  <button
+                    onClick={() => {
+                      const traitSection = document.getElementById("trait-explorer-section");
+                      if (traitSection) {
+                        traitSection.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 transition-colors"
+                  >
+                    <Sliders className="w-4 h-4 text-cyan-400" />
+                    <span>Tester la Sensibilité Auditive</span>
+                  </button>
                 </div>
               </div>
             </section>
-          </div>
 
-          {/* COLONNE DROITE / SIDEBAR THÉORIES & DIAGNOSTIC (4 COLONNES) */}
-          <div className="lg:col-span-4 sticky top-24 space-y-6">
-            <TheorySidebar
-              onOpenDiagnosticModal={() => setIsDiagnosticModalOpen(true)}
-            />
-          </div>
-        </div>
+            {/* 1. CARTES DE STATISTIQUES RAPIDES */}
+            <section>
+              <div className="flex items-center justify-between mb-3 px-1">
+                <h2 className="text-xs font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <Activity className="w-3.5 h-3.5 text-cyan-400" />
+                  Indicateurs & Météo Communautaire
+                </h2>
+                <span className="text-[11px] font-mono text-cyan-400">
+                  Mise à jour en temps réel
+                </span>
+              </div>
+              <StatCards />
+            </section>
+
+            {/* 2. GRILLE ASYMÉTRIQUE PRINCIPALE (TABLEAU DE BORD) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* COLONNE GAUCHE / PRINCIPALE (8 COLONNES) */}
+              <div className="lg:col-span-8 space-y-8">
+                
+                {/* CARTE CENTRALE : GRAPHIQUE RADAR MULTIDIMENSIONNEL */}
+                <section id="radar-section">
+                  <RadarChart
+                    axes={axes}
+                    onAxisChange={handleAxisChange}
+                    onResetAxes={handleResetAxes}
+                  />
+                </section>
+
+                {/* SECTION INTERACTIVE : EXPLORATION D'UN TRAIT (SENSIBILITÉ AUDITIVE) */}
+                <div id="trait-explorer-section">
+                  <TraitExplorer />
+                </div>
+
+                {/* COMPLÉMENT : EXPLORER LES AUTRES SPHÈRES */}
+                <section className="glass-panel rounded-2xl p-6 border border-slate-800/80">
+                  <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                    <div>
+                      <h3 className="text-base font-bold text-white flex items-center gap-2">
+                        <Layers className="w-4 h-4 text-cyan-400" />
+                        Accéder aux Espaces Détaillés
+                      </h3>
+                      <p className="text-xs text-slate-400">
+                        Chaque sphère dispose de son module complet et interactif.
+                      </p>
+                    </div>
+                    <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+                      Entièrement Disponible
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <button
+                      onClick={() => setActiveTab("sensorielle")}
+                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-cyan-400 hover:bg-slate-900 transition-all text-left group"
+                    >
+                      <div className="text-xs font-bold text-cyan-300 mb-1 group-hover:text-cyan-200">
+                        Sphère Sensorielle ➔
+                      </div>
+                      <p className="text-[11px] text-slate-300 leading-snug">
+                        Audition, vision/néons, textures cutanées, proprioception et déclencheurs.
+                      </p>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab("cognitive")}
+                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-purple-400 hover:bg-slate-900 transition-all text-left group"
+                    >
+                      <div className="text-xs font-bold text-purple-300 mb-1 group-hover:text-purple-200">
+                        Sphère Cognitive ➔
+                      </div>
+                      <p className="text-[11px] text-slate-300 leading-snug">
+                        Monotropisme, simulateur des Cuillères et traducteur de Double Empathie.
+                      </p>
+                    </button>
+
+                    <button
+                      onClick={() => setActiveTab("ressources")}
+                      className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-emerald-400 hover:bg-slate-900 transition-all text-left group"
+                    >
+                      <div className="text-xs font-bold text-emerald-300 mb-1 group-hover:text-emerald-200">
+                        Outils & Ressources ➔
+                      </div>
+                      <p className="text-[11px] text-slate-300 leading-snug">
+                        Passeport d'urgence sensorielle, modèles de lettres et guide pour proches.
+                      </p>
+                    </button>
+                  </div>
+                </section>
+              </div>
+
+              {/* COLONNE DROITE / SIDEBAR THÉORIES & DIAGNOSTIC (4 COLONNES) */}
+              <div className="lg:col-span-4 sticky top-24 space-y-6">
+                <TheorySidebar
+                  onOpenDiagnosticModal={() => setIsDiagnosticModalOpen(true)}
+                />
+              </div>
+            </div>
+          </>
+        )}
       </main>
 
       {/* FOOTER */}

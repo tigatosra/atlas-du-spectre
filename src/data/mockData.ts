@@ -4,6 +4,8 @@ import {
   IntensityStat,
   TheoryWidgetData,
   DiagnosticPathStep,
+  SensorySphereItem,
+  CognitiveConceptItem,
 } from "../types/spectrum";
 
 export const initialRadarAxes: RadarAxis[] = [
@@ -12,6 +14,7 @@ export const initialRadarAxes: RadarAxis[] = [
     name: "Sphère Sensorielle",
     shortName: "Sensorialité",
     description: "Traitement des stimuli physiques (bruit, textures, lumière, proprioception) et seuil de saturation.",
+    relativeDescription: "Indicateur de la charge physique que votre proche endure. Un score élevé signifie que l'environnement le blesse ou l'épuise bien avant qu'il ne s'en plaigne verbalement.",
     value: 82,
     communityAverage: 76,
     category: "sensorialite",
@@ -23,6 +26,7 @@ export const initialRadarAxes: RadarAxis[] = [
     name: "Monotropisme & Hyperfocus",
     shortName: "Monotropisme",
     description: "Tendance de l'esprit à allouer l'ensemble de son énergie à un seul centre d'intérêt à la fois.",
+    relativeDescription: "Quand votre proche est absorbé, il n'est pas distrait ou impoli : changer de tâche exige un effort neurologique colossal. Prévenez 10 minutes avant d'interrompre.",
     value: 88,
     communityAverage: 81,
     category: "cognition",
@@ -34,6 +38,7 @@ export const initialRadarAxes: RadarAxis[] = [
     name: "Style de Communication",
     shortName: "Double Empathie",
     description: "Préférence pour l'authenticité directe, échanges sans sous-texte implicite, langage de précision.",
+    relativeDescription: "Votre proche communique avec une honnêteté brute. L'absence de sous-entendus n'est pas de la froideur, c'est une marque de respect et de confiance envers vous.",
     value: 70,
     communityAverage: 73,
     category: "communication",
@@ -45,6 +50,7 @@ export const initialRadarAxes: RadarAxis[] = [
     name: "Masquage & Régulation",
     shortName: "Masquage & Énergie",
     description: "Effort d'adaptation et de camouflage des traits spontanés, impactant la jauge d'énergie vitale.",
+    relativeDescription: "L'énergie invisible dépensée pour paraître 'normal'. S'il semble très à l'aise en société, il risque de s'effondrer de fatigue une fois rentré à la maison.",
     value: 78,
     communityAverage: 84,
     category: "regulation",
@@ -61,6 +67,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Les sons ambiants restent en arrière-plan sans sollicitation cognitive. Aucune fatigue acoustique rapportée.",
     accompanyingStrategies: ["Aucun aménagement nécessaire"],
     auditoryThreshold: "< 25 dB perçu comme insignifiant",
+    relativeGuidance: {
+      visibleSigns: "Détente complète, conversation fluide sans interruption.",
+      whatToAvoid: "Rien de particulier.",
+      effectiveAction: "Profitez du moment pour aborder des sujets calmes.",
+      safePhrase: "Tout va bien pour toi ?",
+    },
   },
   2: {
     level: 2,
@@ -69,6 +81,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Léger inconfort uniquement en cas de bruits extrêmes et soudains (marteau-piqueur immédiat, sirène à proximité).",
     accompanyingStrategies: ["Fermeture occasionnelle des fenêtres"],
     auditoryThreshold: "Tolérance élevée aux bruits urbains ordinaires",
+    relativeGuidance: {
+      visibleSigns: "Clignement d'yeux ou sursaut bref lors d'un bruit sec.",
+      whatToAvoid: "Ne pas minimiser le bruit s'il est mentionné.",
+      effectiveAction: "Fermer une porte ou une fenêtre sans en faire un sujet lourd.",
+      safePhrase: "Ce bruit te dérange ? Je peux fermer la fenêtre.",
+    },
   },
   3: {
     level: 3,
@@ -77,6 +95,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Capacité à suivre une discussion dans un café sans effort particulier, léger agacement si les bruits se multiplient.",
     accompanyingStrategies: ["Changement de place dans les lieux bruyants"],
     auditoryThreshold: "Stimuli modérés traités naturellement",
+    relativeGuidance: {
+      visibleSigns: "Regard qui se tourne vers les sources de bruit secondaire.",
+      whatToAvoid: "Parler tous en même temps autour de la table.",
+      effectiveAction: "Proposer de s'asseoir dans un coin moins passant.",
+      safePhrase: "On se met plutôt vers cette table plus au calme ?",
+    },
   },
   4: {
     level: 4,
@@ -85,6 +109,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Difficulté émergente à discriminer les voix lorsqu'il y a plus de deux sources sonores simultanées.",
     accompanyingStrategies: ["Préférence pour les pièces feutrées"],
     auditoryThreshold: "Fatigue légère après 3 heures de stimulation continue",
+    relativeGuidance: {
+      visibleSigns: "Demande de répéter ('hein ?', 'pardon ?'), léger plissement des yeux.",
+      whatToAvoid: "Accuser la personne de 'ne pas écouter' ou de rêvasser.",
+      effectiveAction: "Éteindre la télévision ou la radio en fond pendant que vous discutez.",
+      safePhrase: "J'éteins la musique de fond pour qu'on s'entende mieux.",
+    },
   },
   5: {
     level: 5,
@@ -93,6 +123,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "L'énergie diminue nettement après une journée d'open-space ou de transports. Les murmures et cliquetis de clavier deviennent saillants.",
     accompanyingStrategies: ["Écouteurs standards en milieu de journée", "Pauses silencieuses régulières"],
     auditoryThreshold: "Les bruits d'arrière-plan interfèrent avec la pensée fluide",
+    relativeGuidance: {
+      visibleSigns: "Moins d'initiatives de parole, soupirs discrets, frottement des tempes.",
+      whatToAvoid: "Poser une cascade de questions logistiques dès le pas de la porte.",
+      effectiveAction: "Laisser un sas de 30 minutes de silence complet au retour à la maison.",
+      safePhrase: "Prends le temps de décompresser au calme, on parlera du dîner plus tard.",
+    },
   },
   6: {
     level: 6,
@@ -101,6 +137,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Impossible d'ignorer les bourdonnements électriques (néons, frigo, chargeurs). Chaque bruit est traité au premier plan par le cerveau.",
     accompanyingStrategies: ["Casque antibruit passif ou bouchons Loop Engage", "Recherche active de salles calmes"],
     auditoryThreshold: "Les fréquences aiguës provoquent une tension physique involontaire",
+    relativeGuidance: {
+      visibleSigns: "Tension des épaules, gestes saccadés, agacement soudain face aux bruits quotidiens.",
+      whatToAvoid: "Dire 'Mais personne d'autre n'entend ça !' ou 'Tu dramatises'.",
+      effectiveAction: "Valider la perception sonore sans la contester.",
+      safePhrase: "Je te crois. Si tu as besoin de mettre ton casque ou de t'isoler, vas-y sans hésiter.",
+    },
   },
   7: {
     level: 7,
@@ -109,6 +151,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Les supermarchés, restaurants bondés et cours d'école provoquent une tension musculaire et une irritabilité immédiate. Le filtrage cérébral est épuisé.",
     accompanyingStrategies: ["Casque ANC Sony/Bose indispensable au quotidien", "Courses aux horaires calmes (heures silencieuses)"],
     auditoryThreshold: "Conversations multiples perçues comme un mur de bruit agressif",
+    relativeGuidance: {
+      visibleSigns: "Visage crispé, perte du sourire, réponses monocordes, mains sur les oreilles ou retrait physique.",
+      whatToAvoid: "Insister pour rester dans la foule ou entamer une dispute.",
+      effectiveAction: "Proposer de quitter le lieu sans culpabiliser : 'Viens, on sort prendre l'air'.",
+      safePhrase: "Je m'occupe de finir les courses, attends-moi dans la voiture au calme.",
+    },
   },
   8: {
     level: 8,
@@ -117,6 +165,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Les bruits stridents (frottement de couverts, cris d'enfants, freinages) déclenchent une douleur physique semblable à une décharge électrique.",
     accompanyingStrategies: ["Double protection (bouchons d'oreilles + casque antibruit actif)", "Isolement en pièce noire post-sortie"],
     auditoryThreshold: "Perte rapide de la capacité à articuler des phrases (début de mutisme)",
+    relativeGuidance: {
+      visibleSigns: "Perte du contact visuel, respiration courte, incapacité à formuler des phrases complètes.",
+      whatToAvoid: "Toucher par surprise, exiger des explications verbales ou parler fort.",
+      effectiveAction: "Créer un bouclier environnemental : baisser la lumière, couper tout son, donner de l'eau.",
+      safePhrase: "Tu es en sécurité. Pas besoin de parler, je suis là.",
+    },
   },
   9: {
     level: 9,
@@ -125,6 +179,12 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "L'environnement sonore détruit la pensée cohérente. Désorientation spatiale, nausées, dissociation sensorielle ou panique physiologique.",
     accompanyingStrategies: ["Retrait immédiat obligatoire de l'environnement", "Pression proprioceptive profonde (couverture lestée)"],
     auditoryThreshold: "Tout son externe est interprété par le système nerveux comme une menace vitale",
+    relativeGuidance: {
+      visibleSigns: "Mutisme quasi total, regard vide ou effrayé, tremblements, prostration.",
+      whatToAvoid: "Ne PAS tenter de raisonner, ne PAS demander 'Qu'est-ce que tu as ?'.",
+      effectiveAction: "Guider doucement vers une pièce sombre sans parler, apporter un objet réconfortant (plaid, écouteurs).",
+      safePhrase: "(Chuchoté) Silence complet. Respire, je veille sur toi.",
+    },
   },
   10: {
     level: 10,
@@ -133,11 +193,153 @@ export const intensityStatsData: Record<number, IntensityStat> = {
     detailedSymptom: "Surcharge totale du système nerveux. Incapacité complète à communiquer, tremblements, effondrement (shutdown) ou crise de détresse incontrôlable (meltdown).",
     accompanyingStrategies: ["Silence absolu, obscurité complète", "Temps de récupération pouvant s'étendre sur 24 à 48 heures"],
     auditoryThreshold: "Effondrement neurologique : coupure des canaux sensoriels",
+    relativeGuidance: {
+      visibleSigns: "Crise de larmes incontrôlable, cris, gestes d'auto-protection ou effondrement statique au sol (corps inerte).",
+      whatToAvoid: "Ne JAMAIS retenir de force, ne jamais crier, ne pas faire de leçons de morale après coup.",
+      effectiveAction: "Assurer la sécurité physique, éloigner les badauds, laisser le système nerveux redescendre sans stimulations.",
+      safePhrase: "(Ne parlez pas. Restez assis à distance bienveillante, en silence).",
+    },
   },
 };
 
+export const sensorySphereItems: SensorySphereItem[] = [
+  {
+    id: "audition",
+    name: "Audition & Environnement Sonore",
+    shortName: "Audition",
+    icon: "Volume2",
+    description: "Perception des fréquences sonores, capacité à isoler une voix dans un environnement bruyant et sensibilité aux bruits répétitifs.",
+    hyperSensibility: "Tout bruit est perçu au même plan : néons, froissements, voix lointaines. Fatigue cérébrale rapide.",
+    hypoSensibility: "Recherche de stimuli forts (écoute de musique à fond avec basses pour réguler le système nerveux).",
+    commonTriggers: ["Open space", "Bruits de bouche / mâchonnement (misophonie)", "Sifflements d'appareils électroniques", "Foules"],
+    soothingTools: ["Bouchons Loop Engage", "Casque antibruit actif (Bose / Sony)", "Générateur de bruit brun (Brown Noise)"],
+    forRelativesAdvice: "Ne considérez jamais sa demande de baisser le son comme un caprice : pour un cerveau autiste, c'est une douleur physique réelle.",
+    defaultIntensity: 8,
+  },
+  {
+    id: "vision",
+    name: "Vision & Luminosité",
+    shortName: "Vision & Lumière",
+    icon: "Sun",
+    description: "Sensibilité aux néons industriels, variations brutales de lumière, lumières bleues d'écrans et surcharge visuelle d'espaces encombrés.",
+    hyperSensibility: "Éblouissement douloureux par les journées ensoleillées ou les néons de supermarché qui scintillent à 50 Hz.",
+    hypoSensibility: "Attirance pour les jeux de lumière, objets kaléidoscopiques, reflets dans l'eau.",
+    commonTriggers: ["Néons fluorescents", "Lumière directe du zénith", "Magasins aux allées surchargées", "Écrans trop lumineux la nuit"],
+    soothingTools: ["Lunettes teintées FL-41 anti-migraine", "Casquette / visière", "Ampoules connectées tamisées couleur ambre"],
+    forRelativesAdvice: "Adoptez des éclairages indirects à la maison (lampes de sel, guirlandes) plutôt que le grand plafonnier blanc chirurgical.",
+    defaultIntensity: 7,
+  },
+  {
+    id: "tactile",
+    name: "Tactile & Textures",
+    shortName: "Toucher & Matières",
+    icon: "Fingerprint",
+    description: "Perception cutanée des vêtements, réactions aux textures inattendues et besoin de pression corporelle profonde.",
+    hyperSensibility: "Les étiquettes cousues grattent comme du verre pilé ; les contacts physiques imprévus provoquent un rejet réflexe.",
+    hypoSensibility: "Besoin de toucher des matières douces spécifiques, frottement répétitif de tissus (stimming tactile).",
+    commonTriggers: ["Étiquettes de cols", "Coutures de chaussettes", "Laine rêche", "Bise sociale ou tapotement dans le dos inattendu"],
+    soothingTools: ["Vêtements sans coutures en bambou", "Couverture lestée (Weighted Blanket)", "Fidgets texturés"],
+    forRelativesAdvice: "Demandez toujours la permission avant de faire un câlin ('Tu as envie d'une étreinte ou d'espace ?'). Privilégiez les pressions fermes aux caresses légères effleurantes.",
+    defaultIntensity: 7,
+  },
+  {
+    id: "proprioception",
+    name: "Proprioception & Vestibulaire",
+    shortName: "Corps & Mouvement",
+    icon: "Activity",
+    description: "Conscience de son corps dans l'espace, équilibre, coordination et besoin de mouvements d'auto-régulation (stimming).",
+    hyperSensibility: "Mal des transports rapide, vertige, inconfort face aux mouvements brusques ou foules en déplacement.",
+    hypoSensibility: "Se cogner souvent aux meubles, posture atypique (s'asseoir en tailleur partout), besoin de se balancer pour réfléchir.",
+    commonTriggers: ["Piétinement statique prolongé", "Manèges ou transports secoués", "Devoir rester assis immobile pendant des heures"],
+    soothingTools: ["Chaise ergonomique avec ballon", "Balançoire sensorielle", "Stimming corporel libre (battements de mains, balancement)"],
+    forRelativesAdvice: "Le stimming (balancement, tripoter un objet) n'est pas un tic à corriger : c'est le mécanisme par lequel son cerveau évite le surrégime.",
+    defaultIntensity: 6,
+  },
+];
+
+export const cognitiveConceptsData: CognitiveConceptItem[] = [
+  {
+    id: "monotropism",
+    title: "Le Monotropisme",
+    subtitle: "La théorie de l'attention en tunnel",
+    scientificReference: "Murray, Lesser & Lawson (2005)",
+    executiveSummary: "L'esprit consacre une quantité immense de ressources cognitives à un seul centre d'intérêt à la fois, créant un puissant tunnel attentionnel. C'est l'opposé du multitâche diffus.",
+    dailyConsequenceSelf: "Vous êtes incroyablement performant et absorbé dans vos passions, mais changer brusquement d'activité génère une souffrance cognitive et une sensation de vertige mental.",
+    dailyConsequenceRelative: "Votre proche ne vous ignore pas lorsqu'il travaille ou lit : il ne vous ENTEND littéralement pas parce que tout son flux cortical est alloué à son tunnel.",
+    concreteExample: "Quand vous lui dites 'À table !' et qu'il continue de taper sur son clavier pendant 15 minutes sans bouger.",
+    practicalTipsSelf: [
+      "Instaurez des rituels de transition de 10 minutes entre deux tâches",
+      "Utilisez des alarmes douces visuelles plutôt que des sonneries stridentes",
+      "Autorisez-vous à vivre pleinement vos hyperfocus : c'est votre source de joie majeure",
+    ],
+    practicalTipsRelative: [
+      "Prévenez à l'avance : 'On mange dans 15 minutes, termine ta phrase'",
+      "Approchez-vous doucement et posez une main près de lui avant de parler",
+      "Ne prenez jamais cette absorption comme un manque d'amour ou d'attention",
+    ],
+  },
+  {
+    id: "executive-dysfunction",
+    title: "L'Inertie Exécutive & Dysfonctionnement",
+    subtitle: "La physique du démarrage et de l'arrêt mental",
+    scientificReference: "Dr. Karen Leneh Buckle (2021)",
+    executiveSummary: "Difficulté fondamentale à amorcer, modifier ou interrompre une action physique ou mentale, indépendamment de la volonté consciente et de l'intelligence.",
+    dailyConsequenceSelf: "Rester bloqué des heures sur son lit avec l'envie sincère de se lever sans pouvoir 'activer le bouton start'. Culpabilité intense et sentiment d'impuissance.",
+    dailyConsequenceRelative: "Vous pourriez croire à de la paresse ou de la mauvaise volonté, alors que c'est une défaillance temporaire de la courroie de transmission neurologique.",
+    concreteExample: "Vouloir prendre une douche depuis 14h, et se retrouver à 18h toujours assis habillé sans avoir pu franchir la porte de la salle de bain.",
+    practicalTipsSelf: [
+      "Décomposez la tâche en sous-étapes ridicules : 'Je ne vais pas ranger la pièce, je vais juste toucher cette chaussette'",
+      "Utilisez le 'body doubling' (travailler en présence silencieuse de quelqu'un)",
+      "Ne vous insultez pas : reconnaissez l'inertie comme un symptôme biologique",
+    ],
+    practicalTipsRelative: [
+      "Aidez à franchir le cap de l'amorce : 'Je viens avec toi jusqu'à la cuisine, on met la bouilloire ensemble'",
+      "Évitez les reproches moralisateurs ('C'est pourtant pas sorcier !')",
+      "Célébrez les petits démarrages accomplis",
+    ],
+  },
+  {
+    id: "masking-cost",
+    title: "Le Masquage & la Théorie des Cuillères",
+    subtitle: "Le coût métabolique du camouflage social",
+    scientificReference: "Dr. Laura Hull (2019) & Christine Miserandino (2003)",
+    executiveSummary: "Chaque interaction sociale neurotypique consomme des 'cuillères d'énergie'. Pour paraître à l'aise, l'adulte autiste calcule consciemment chaque regard, hochement et intonation.",
+    dailyConsequenceSelf: "Après une journée de travail ou une fête de famille, le réservoir est à zéro. Le soir se termine en silence obligatoire ou en larmes inexpliquées.",
+    dailyConsequenceRelative: "Votre proche peut sembler jovial et éclatant en public, puis s'effondrer comme une coquille vide dès la porte de la maison fermée.",
+    concreteExample: "Après un week-end chez les beaux-parents, avoir besoin de 48 heures sans prononcer un seul mot sous la couette.",
+    practicalTipsSelf: [
+      "Repérez vos micro-masquages (sourires automatiques qui font mal aux joues)",
+      "Planifiez des jours de récupération stricts après tout grand événement",
+      "Autorisez-vous à dire 'Je n'ai plus d'énergie pour parler ce soir'",
+    ],
+    practicalTipsRelative: [
+      "Ne lui reprochez pas de 'changer de personnalité' une fois rentré à la maison",
+      "Offrez un espace où il a le droit d'être non-verbal sans être jugé bizarre",
+      "Comprenez que son mutisme du soir est une recharge vitale, pas un rejet",
+    ],
+  },
+  {
+    id: "double-empathy",
+    title: "La Double Empathie",
+    subtitle: "Un pont culturel plutôt qu'un déficit",
+    scientificReference: "Dr. Damian Milton (2012)",
+    executiveSummary: "La rupture de communication entre personnes autistes et non-autistes n'est pas due à un manque d'empathie, mais à deux styles de communication distincts qui peinent à se traduire mutuellement.",
+    dailyConsequenceSelf: "Vous vous exprimez avec franchise, précision et logique, mais vos propos sont souvent sur-interprétés comme étant froids ou agressifs.",
+    dailyConsequenceRelative: "Vous attendez des sous-entendus et des signaux corporels implicites, alors que votre proche a besoin de consignes verbales claires et directes.",
+    concreteExample: "Quand vous demandez 'Tu as froid ?' en espérant qu'il ferme la fenêtre, il répond 'Non' simplement parce qu'il a répondu littéralement à la question.",
+    practicalTipsSelf: [
+      "Précisez votre intention : 'Je te dis ceci sans agressivité, simplement pour être clair'",
+      "Posez des questions directes sur les attentes des autres au lieu de deviner",
+    ],
+    practicalTipsRelative: [
+      "Dites exactement ce que vous voulez : 'J'ai froid, est-ce que tu peux fermer la fenêtre s'il te plaît ?'",
+      "Arrêtez de chercher des sous-entendus cachés dans ses phrases : il n'y en a aucun",
+    ],
+  },
+];
+
 export const initialExperiences: ExperienceComment[] = [
-  // Intensity 8 (Common peak)
+  // Intensity 8
   {
     id: "exp-1",
     author: "Camille R.",
@@ -149,6 +351,20 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 284,
     copingStrategy: "Casque Bose QC45 permanent + suppression du retour son clavier.",
     tags: ["Hyperacousie", "Épuisement", "Validation"],
+    perspectiveAuthor: "autiste",
+  },
+  {
+    id: "exp-p1",
+    author: "Antoine T. (Conjoint)",
+    avatarText: "AT",
+    intensityLevel: 8,
+    timestamp: "Il y a 4h",
+    contextTag: "Vie de couple",
+    text: "Quand ma compagne rentrait du travail au niveau 8, je lui demandais 'Alors ta journée ?' et elle s'énervait. J'ai compris que ma question ajoutait une stimulation sonore à un vase déjà plein. Maintenant, je l'accueille avec un thé sans parler, et c'est elle qui vient me voir 45 minutes plus tard. Notre couple a été sauvé par cette compréhension.",
+    resonancesCount: 382,
+    copingStrategy: "Accueillir en silence complet et décaler les discussions au dîner.",
+    tags: ["Entourage", "Couple", "Décompression"],
+    perspectiveAuthor: "proche",
   },
   {
     id: "exp-2",
@@ -161,6 +377,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 192,
     copingStrategy: "Courses le mardi à 20h30 avec playlist de bruits de pluie.",
     tags: ["Surcharge", "Transports", "Stratégie"],
+    perspectiveAuthor: "autiste",
   },
   {
     id: "exp-3",
@@ -173,6 +390,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 341,
     copingStrategy: "Bouchons Loop Experience discrètement portés à table.",
     tags: ["Famille", "Sensorialité", "Soulagement"],
+    perspectiveAuthor: "autiste",
   },
 
   // Intensity 7
@@ -187,6 +405,20 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 178,
     copingStrategy: "20 minutes de sas de décompression silencieux dans la voiture avant de rentrer.",
     tags: ["Travail", "Batterie Sociale", "Inertie"],
+    perspectiveAuthor: "autiste",
+  },
+  {
+    id: "exp-p2",
+    author: "Hélène (Maman)",
+    avatarText: "HL",
+    intensityLevel: 7,
+    timestamp: "Il y a 1j",
+    contextTag: "Famille",
+    text: "Mon fils adulte refusait les fêtes de Noël familiales. Je le prenais pour de l'ingratitude. Quand il m'a montré ce tableau sensoriel, j'ai réalisé que 12 personnes qui parlent en même temps dans un salon le détruisaient physiquement. Cette année, on a aménagé une chambre au calme où il peut s'isoler à volonté : il est venu avec le sourire.",
+    resonancesCount: 429,
+    copingStrategy: "Créer une pièce de repli silencieuse garantie lors des rassemblements.",
+    tags: ["Parent", "Noël", "Aménagement"],
+    perspectiveAuthor: "proche",
   },
   {
     id: "exp-5",
@@ -199,6 +431,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 215,
     copingStrategy: "Demander systématiquement à s'asseoir dos au mur ou en terrasse calme.",
     tags: ["Traitement auditif", "Double Empathie"],
+    perspectiveAuthor: "autiste",
   },
 
   // Intensity 9 & 10
@@ -213,6 +446,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 412,
     copingStrategy: "Carte d'information sensorielle toujours dans ma poche pour les urgences.",
     tags: ["Shutdown", "Urgence", "Sécurité"],
+    perspectiveAuthor: "autiste",
   },
   {
     id: "exp-7",
@@ -225,6 +459,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 309,
     copingStrategy: "Chambre 'safe space' insonorisée avec rideaux occultants thermiques.",
     tags: ["Meltdown", "Récupération", "Non-verbale"],
+    perspectiveAuthor: "autiste",
   },
 
   // Intensity 5 & 6
@@ -239,6 +474,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 156,
     copingStrategy: "Multiprises à interrupteur pour couper tout appareil en veille.",
     tags: ["Ultrasons", "Hyper-acuité", "Quotidien"],
+    perspectiveAuthor: "autiste",
   },
   {
     id: "exp-9",
@@ -251,9 +487,8 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 110,
     copingStrategy: "Marche avec musique instrumentale douce et régulière.",
     tags: ["Batterie", "Énergie", "Prévention"],
+    perspectiveAuthor: "autiste",
   },
-
-  // Intensity 1 to 4
   {
     id: "exp-10",
     author: "Yann P.",
@@ -265,6 +500,7 @@ export const initialExperiences: ExperienceComment[] = [
     resonancesCount: 88,
     copingStrategy: "Bains de forêt hebdomadaires pour réinitialiser le système.",
     tags: ["Ressource", "Nature", "Apaisement"],
+    perspectiveAuthor: "autiste",
   },
 ];
 

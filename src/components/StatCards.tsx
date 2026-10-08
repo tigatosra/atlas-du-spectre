@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useSensory } from "../context/SensoryContext";
+import { usePerspective } from "../context/PerspectiveContext";
 import {
   MessageSquareShare,
   TrendingUp,
@@ -14,40 +15,53 @@ import {
 
 export default function StatCards() {
   const { lowSensoryMode } = useSensory();
+  const { isRelativePerspective } = usePerspective();
 
   const cards = [
     {
       id: "experiences",
-      title: "Expériences Partagées",
+      title: isRelativePerspective ? "Vécus de Pairs & Proches" : "Expériences Partagées",
       value: "8 432",
-      badge: "+14% cette semaine",
+      badge: isRelativePerspective ? "+180 récits d'alliés" : "+14% cette semaine",
       badgeType: "growth",
-      subtitle: "Vécus concrets anonymisés & validés par les pairs",
+      subtitle: isRelativePerspective
+        ? "Témoignages croisés de personnes autistes et de leurs conjoints"
+        : "Vécus concrets anonymisés & validés par les pairs",
       icon: MessageSquareShare,
       accentColor: "#22d3ee", // cyan
-      metricDetail: "287 témoignages ajoutés ces dernières 24h",
+      metricDetail: isRelativePerspective
+        ? "2 140 partages rédigés par des proches et familles"
+        : "287 témoignages ajoutés ces dernières 24h",
     },
     {
       id: "trait-discuss",
-      title: "Sujet phare aujourd'hui",
+      title: isRelativePerspective ? "Sujet décrypté aujourd'hui" : "Sujet phare aujourd'hui",
       value: "Inertie Exécutive",
       badge: "Tendance communautaire",
       badgeType: "trending",
-      subtitle: "« Vouloir faire sans pouvoir déclencher le geste »",
+      subtitle: isRelativePerspective
+        ? "« Pourquoi votre proche semble bloqué sans pouvoir démarrer »"
+        : "« Vouloir faire sans pouvoir déclencher le geste »",
       icon: Zap,
       accentColor: "#a855f7", // purple
-      metricDetail: "1 240 adultes échangent sur les stratégies d'amorce",
+      metricDetail: isRelativePerspective
+        ? "Conseil clé : proposer une aide d'amorce sans jugement"
+        : "1 240 adultes échangent sur les stratégies d'amorce",
     },
     {
       id: "resonance",
-      title: "Indice de Résonance",
+      title: isRelativePerspective ? "Apaisement Relationnel" : "Indice de Résonance",
       value: "94.2%",
-      badge: "Validation mutuelle",
+      badge: isRelativePerspective ? "Conflits évités" : "Validation mutuelle",
       badgeType: "positive",
-      subtitle: "« Je pensais être la seule personne à vivre cela »",
+      subtitle: isRelativePerspective
+        ? "Des proches rapportent une nette diminution des disputes"
+        : "« Je pensais être la seule personne à vivre cela »",
       icon: HeartHandshake,
       accentColor: "#34d399", // emerald
-      metricDetail: "Sentiment de soulagement et d'appartenance",
+      metricDetail: isRelativePerspective
+        ? "Meilleure communication grâce à la Double Empathie"
+        : "Sentiment de soulagement et d'appartenance",
     },
     {
       id: "sensory-load",
@@ -55,10 +69,14 @@ export default function StatCards() {
       value: "Niveau 6.8 / 10",
       badge: "Charge Ambiante Élevée",
       badgeType: "warning",
-      subtitle: "Saturation acoustique & météo instable signalées",
+      subtitle: isRelativePerspective
+        ? "Environnements bruyants aujourd'hui : prévoyez un retour au calme"
+        : "Saturation acoustique & météo instable signalées",
       icon: Activity,
       accentColor: "#f59e0b", // amber
-      metricDetail: "Recommandation : autorisez-vous le repos et l'isolement",
+      metricDetail: isRelativePerspective
+        ? "Offrez un sas silencieux de 30 min ce soir"
+        : "Recommandation : autorisez-vous le repos et l'isolement",
     },
   ];
 

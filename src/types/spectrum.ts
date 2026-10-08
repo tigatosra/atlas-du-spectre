@@ -1,8 +1,11 @@
+export type UserPerspective = "autiste" | "proche";
+
 export interface RadarAxis {
   id: string;
   name: string;
   shortName: string;
   description: string;
+  relativeDescription: string;
   value: number; // 0 to 100
   communityAverage: number; // 0 to 100
   category: "sensorialite" | "cognition" | "communication" | "regulation";
@@ -22,6 +25,7 @@ export interface ExperienceComment {
   userResonated?: boolean;
   copingStrategy?: string;
   tags: string[];
+  perspectiveAuthor?: "autiste" | "proche";
 }
 
 export interface IntensityStat {
@@ -31,6 +35,40 @@ export interface IntensityStat {
   detailedSymptom: string;
   accompanyingStrategies: string[];
   auditoryThreshold: string;
+  // Specific guidance for family / partners / friends
+  relativeGuidance: {
+    visibleSigns: string;
+    whatToAvoid: string;
+    effectiveAction: string;
+    safePhrase: string;
+  };
+}
+
+export interface SensorySphereItem {
+  id: string;
+  name: string;
+  shortName: string;
+  icon: string;
+  description: string;
+  hyperSensibility: string;
+  hypoSensibility: string;
+  commonTriggers: string[];
+  soothingTools: string[];
+  forRelativesAdvice: string;
+  defaultIntensity: number;
+}
+
+export interface CognitiveConceptItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  scientificReference: string;
+  executiveSummary: string;
+  dailyConsequenceSelf: string;
+  dailyConsequenceRelative: string;
+  concreteExample: string;
+  practicalTipsSelf: string[];
+  practicalTipsRelative: string[];
 }
 
 export interface TheoryWidgetData {

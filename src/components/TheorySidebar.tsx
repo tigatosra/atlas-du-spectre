@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { theoriesList } from "../data/mockData";
 import { TheoryWidgetData } from "../types/spectrum";
+import { usePerspective } from "../context/PerspectiveContext";
 import {
   Compass,
   BookOpen,
@@ -14,6 +15,7 @@ import {
   Sparkles,
   ArrowRight,
   ExternalLink,
+  HeartHandshake,
 } from "lucide-react";
 
 interface TheorySidebarProps {
@@ -23,6 +25,7 @@ interface TheorySidebarProps {
 export default function TheorySidebar({
   onOpenDiagnosticModal,
 }: TheorySidebarProps) {
+  const { isRelativePerspective } = usePerspective();
   const [expandedId, setExpandedId] = useState<string>("monotropism");
 
   const toggleExpand = (id: string) => {
@@ -57,13 +60,17 @@ export default function TheorySidebar({
               Orientation & Démarches
             </span>
             <h3 className="text-base font-bold text-white">
-              Parcours Diagnostiques
+              {isRelativePerspective
+                ? "Accompagner le Diagnostic"
+                : "Parcours Diagnostiques"}
             </h3>
           </div>
         </div>
 
         <p className="text-xs text-slate-300 leading-relaxed mb-4">
-          De l'auto-identification bienveillante aux bilans officiels (CRA, psychiatres spécialisés adultes). Découvrez vos options étape par étape.
+          {isRelativePerspective
+            ? "Comment soutenir votre proche sans pression, valider son auto-identification et l'orienter vers des praticiens adultes bienveillants."
+            : "De l'auto-identification bienveillante aux bilans officiels (CRA, psychiatres spécialisés adultes). Découvrez vos options étape par étape."}
         </p>
 
         <button
@@ -72,7 +79,11 @@ export default function TheorySidebar({
         >
           <div className="flex items-center gap-2">
             <Compass className="w-4 h-4 text-cyan-200" />
-            <span>Explorer les parcours diagnostiques</span>
+            <span>
+              {isRelativePerspective
+                ? "Guide pour les proches & étapes"
+                : "Explorer les parcours diagnostiques"}
+            </span>
           </div>
           <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
         </button>
@@ -185,7 +196,9 @@ export default function TheorySidebar({
           <span>🤝</span> « Rien sur nous sans nous »
         </div>
         <p className="leading-relaxed">
-          Atlas du Spectre valorise l'expertise expérientielle des adultes concernés. Vos sensations sont réelles, valides et partagées.
+          {isRelativePerspective
+            ? "La communication n'est pas brisée, elle est biculturelle. En apprenant la langue sensorielle de votre proche, vous lui offrez le plus grand des soulagements."
+            : "Atlas du Spectre valorise l'expertise expérientielle des adultes concernés. Vos sensations sont réelles, valides et partagées."}
         </p>
       </div>
     </aside>

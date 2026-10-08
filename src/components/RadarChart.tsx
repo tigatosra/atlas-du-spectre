@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { RadarAxis } from "../types/spectrum";
 import { useSensory } from "../context/SensoryContext";
+import { usePerspective } from "../context/PerspectiveContext";
 import {
   Volume2,
   Compass,
@@ -28,6 +29,7 @@ export default function RadarChart({
   onResetAxes,
 }: RadarChartProps) {
   const { lowSensoryMode } = useSensory();
+  const { isRelativePerspective } = usePerspective();
   const [showCommunityAverage, setShowCommunityAverage] = useState(true);
   const [selectedAxisId, setSelectedAxisId] = useState<string>("sensorialite");
   const [isEditing, setIsEditing] = useState(false);
@@ -346,8 +348,16 @@ export default function RadarChart({
             </h3>
 
             <p className="text-xs text-slate-300 leading-relaxed mb-4">
-              {selectedAxis.description}
+              {isRelativePerspective
+                ? selectedAxis.relativeDescription
+                : selectedAxis.description}
             </p>
+
+            {isRelativePerspective && (
+              <div className="mb-4 p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/30 text-[11px] text-emerald-200 leading-tight">
+                🤝 <strong>Conseil Proche :</strong> Si vous observez de la tension chez votre proche, vérifiez en priorité cet axe avant de supposer un problème relationnel.
+              </div>
+            )}
 
             {/* COMPARATIVE PROGRESS BARS */}
             <div className="space-y-3 p-3 rounded-lg bg-slate-900/80 border border-slate-800">
