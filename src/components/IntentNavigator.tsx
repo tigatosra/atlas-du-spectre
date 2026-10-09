@@ -12,6 +12,7 @@ import {
   CheckCircle2,
   Sliders,
   Shield,
+  UserCheck,
 } from "lucide-react";
 
 interface IntentNavigatorProps {
@@ -23,6 +24,16 @@ export default function IntentNavigator({ onSelectIntent }: IntentNavigatorProps
   const [selectedIntentId, setSelectedIntentId] = useState<string>("");
 
   const intents = [
+    {
+      id: "profils",
+      icon: UserCheck,
+      title: "Construire mon Profil / Archétypes Types",
+      subtitle: "Explorer la banque de profils (AuDHD, Caméléon, etc.) et créer son passeport sensoriel sur mesure.",
+      actionLabel: "Ouvrir le constructeur",
+      targetTab: "profils",
+      role: "autiste" as const,
+      color: "#38bdf8", // sky
+    },
     {
       id: "questionnement",
       icon: Compass,

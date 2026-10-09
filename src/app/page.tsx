@@ -13,6 +13,7 @@ import CaregiverGuideView from "../components/CaregiverGuideView";
 import MediaLibraryView from "../components/MediaLibraryView";
 import ResourcesView from "../components/ResourcesView";
 import IntentNavigator from "../components/IntentNavigator";
+import ProfileBuilderView from "../components/ProfileBuilderView";
 import { initialRadarAxes } from "../data/mockData";
 import { RadarAxis } from "../types/spectrum";
 import { usePerspective } from "../context/PerspectiveContext";
@@ -64,6 +65,13 @@ export default function HomePage() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
         
         {/* CONDITIONAL RENDERING ACCORDING TO ACTIVE TAB */}
+        {activeTab === "profils" && (
+          <ProfileBuilderView
+            onApplyProfileToRadar={(newAxes) => setAxes(newAxes)}
+            onGoToTab={(tab) => setActiveTab(tab)}
+          />
+        )}
+
         {activeTab === "sensorielle" && <SensorySphereView />}
 
         {activeTab === "cognitive" && <CognitiveSphereView />}
@@ -166,6 +174,14 @@ export default function HomePage() {
 
                 {/* QUICK ACTIONS BANNER */}
                 <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0">
+                  <button
+                    onClick={() => setActiveTab("profils")}
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-cyan-200 bg-slate-900 hover:bg-slate-800 border border-cyan-500/40 shadow-[0_0_10px_rgba(34,211,238,0.15)] transition-all cursor-pointer"
+                  >
+                    <UserCheck className="w-4 h-4 text-cyan-400" />
+                    <span>Constructeur de Profil & Archétypes</span>
+                  </button>
+
                   <button
                     onClick={() => setActiveTab("mediatheque")}
                     className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-all cursor-pointer"

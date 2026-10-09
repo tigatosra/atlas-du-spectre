@@ -39,6 +39,7 @@ export default function Header({
 
   const navItems = [
     { id: "dashboard", label: "Tableau de Bord", icon: Activity },
+    { id: "profils", label: "Constructeur Profil", icon: UserCheck },
     { id: "sensorielle", label: "Sensorialité", icon: Sliders },
     { id: "cognitive", label: "Cognition", icon: Compass },
     { id: "proches", label: "Guide Proches", icon: HeartHandshake },

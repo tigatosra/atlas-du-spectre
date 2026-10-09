@@ -128,3 +128,47 @@ export interface DiagnosticPathStep {
   nuance: string;
   recommendedResources: string[];
 }
+
+// Neurotype identitaire
+export type NeurotypeCategory =
+  | "autistic_diagnosed"
+  | "autistic_self_identified"
+  | "audhd"
+  | "questioning"
+  | "allistic_typical"
+  | "other_neurodivergent";
+
+// Profil usager (personnalisé ou archétype)
+export interface UserProfileData {
+  id: string;
+  name: string;
+  neurotype: NeurotypeCategory;
+  neurotypeLabel: string;
+  avatarIcon?: string;
+  tagline: string;
+  description: string;
+  quote?: string;
+  
+  // Axes cardinaux (0 à 100%)
+  axesScores: {
+    sensorialite: number;
+    monotropisme: number; // Cognition & Exécutif
+    communication: number; // Social & Masquage
+    masquage: number; // Régulation & Routines
+  };
+
+  // Caractéristiques & Préférences
+  communicationPreferences: string[];
+  sensoryTriggers: string[];
+  soothingTools: string[];
+  earlyWarningSigns: string[];
+  specialInterests?: string[];
+  
+  // Clé pour les proches
+  caregiverAdvice?: string;
+  
+  // Statut
+  isArchetype?: boolean;
+  createdAt?: string;
+}
+
