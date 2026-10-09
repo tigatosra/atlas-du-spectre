@@ -1,4 +1,42 @@
 export type UserPerspective = "autiste" | "proche";
+export type VisitorPerspective = "autistic_adult" | "questioning" | "caregiver" | "professional";
+
+export type MediaFormat =
+  | "book"
+  | "audiobook"
+  | "video"
+  | "podcast"
+  | "website"
+  | "tool_app"
+  | "test";
+
+export type EnergyLevel = "low_energy" | "medium_energy" | "deep_dive";
+
+// "Truc" ou stratégie concrète partagée par un pair autiste
+export interface PeerHackTip {
+  id: string;
+  traitId: string;
+  title: string;
+  content: string;
+  contextTag: "maison" | "travail" | "transports" | "social" | "urgence_shutdown" | string;
+  energyCost: "zero_effort" | "faible" | "modere" | string;
+  workedForCount: number;
+  userValidated?: boolean;
+  author: string;
+  timestamp: string;
+}
+
+// Module Décodeur pour Proches: "Ce que vous voyez vs Ce qui se passe réellement"
+export interface CaregiverDecoderCard {
+  id: string;
+  title: string;
+  whatYouSee: string;
+  whatActuallyHappens: string;
+  neurologicalMechanism: string;
+  supportiveAction: string;
+  whatToNeverDo: string;
+  safePhrase: string;
+}
 
 export interface RadarAxis {
   id: string;

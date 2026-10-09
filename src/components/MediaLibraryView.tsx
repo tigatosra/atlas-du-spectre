@@ -17,6 +17,8 @@ import {
   User,
   HeartHandshake,
   Tag,
+  Zap,
+  Wrench,
 } from "lucide-react";
 
 export default function MediaLibraryView() {
@@ -24,6 +26,7 @@ export default function MediaLibraryView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedEnergy, setSelectedEnergy] = useState<string>("all");
   const [selectedAudience, setSelectedAudience] = useState<string>(
     isRelativePerspective ? "Proche" : "all"
   );
@@ -59,7 +62,11 @@ export default function MediaLibraryView() {
       item.targetAudience === selectedAudience ||
       item.targetAudience === "Tous";
 
-    return matchesSearch && matchesType && matchesCategory && matchesAudience;
+    // Energy filter match
+    const matchesEnergy =
+      selectedEnergy === "all" || item.energyLevel === selectedEnergy;
+
+    return matchesSearch && matchesType && matchesCategory && matchesAudience && matchesEnergy;
   });
 
   const getTypeIcon = (type: MediaResource["type"]) => {
@@ -72,6 +79,8 @@ export default function MediaLibraryView() {
         return <Radio className="w-4 h-4 text-emerald-400" />;
       case "video":
         return <Video className="w-4 h-4 text-rose-400" />;
+      case "tool_app":
+        return <Wrench className="w-4 h-4 text-emerald-400" />;
       case "test":
         return <CheckCircle className="w-4 h-4 text-cyan-400" />;
       default:
@@ -144,6 +153,7 @@ export default function MediaLibraryView() {
             { id: "book", label: "📖 Livres" },
             { id: "audio", label: "🎧 Audiobooks & Podcasts" },
             { id: "video", label: "🎥 Vidéos & Documentaires" },
+            { id: "tool_app", label: "🛠️ Outils & Matériel" },
             { id: "test", label: "🧪 Tests scientifiques" },
             { id: "website", label: "🌐 Sites & Collectifs" },
           ].map((type) => (
@@ -161,8 +171,58 @@ export default function MediaLibraryView() {
           ))}
         </div>
 
+        {/* COGNITIVE ENERGY FILTER ("CUILLÈRES / CHARGE COGNITIVE") */}
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80">
+          <span className="text-xs font-mono text-amber-400 flex items-center gap-1 mr-1 font-bold">
+            <Zap className="w-3.5 h-3.5 text-amber-400" />
+            Jauge d'Énergie (Cuillères) :
+          </span>
+
+          {[
+            {
+              id: "all",
+              label: "Toutes Énergies",
+              desc: "Catalogue complet sans filtre de charge",
+            },
+            {
+              id: "low_energy",
+              label: "⚡ Cuillères Basses (Shutdown)",
+              desc: "Audio, capsules courtes, BD, outils physiques sans lecture lourde",
+            },
+            {
+              id: "medium_energy",
+              label: "⚡⚡ Énergie Moyenne",
+              desc: "Récits de vie accessibles, documentaires, guides pratiques",
+            },
+            {
+              id: "deep_dive",
+              label: "⚡⚡⚡ Hyperfocus (Plongée profonde)",
+              desc: "Essais scientifiques, monographies denses, théories fondamentales",
+            },
+          ].map((energy) => (
+            <button
+              key={energy.id}
+              onClick={() => setSelectedEnergy(energy.id)}
+              title={energy.desc}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                selectedEnergy === energy.id
+                  ? energy.id === "low_energy"
+                    ? "bg-emerald-950 text-emerald-200 border border-emerald-500/50 shadow-[0_0_8px_rgba(52,211,153,0.25)] font-bold"
+                    : energy.id === "medium_energy"
+                    ? "bg-amber-950 text-amber-200 border border-amber-500/50 shadow-[0_0_8px_rgba(245,158,11,0.25)] font-bold"
+                    : energy.id === "deep_dive"
+                    ? "bg-purple-950 text-purple-200 border border-purple-500/50 shadow-[0_0_8px_rgba(168,85,247,0.25)] font-bold"
+                    : "bg-cyan-950 text-cyan-200 border border-cyan-500/50 font-bold"
+                  : "bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200"
+              }`}
+            >
+              {energy.label}
+            </button>
+          ))}
+        </div>
+
         {/* AUDIENCE & CATEGORY FILTERS */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-slate-800/80 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80 text-xs">
           {/* AUDIENCE */}
           <div className="flex items-center gap-2">
             <span className="text-slate-400 font-mono">Public cible :</span>
@@ -219,6 +279,7 @@ export default function MediaLibraryView() {
                 setSearchQuery("");
                 setSelectedType("all");
                 setSelectedCategory("all");
+                setSelectedEnergy("all");
                 setSelectedAudience("all");
               }}
               className="mt-3 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-cyan-300 border border-cyan-500/30"
@@ -244,9 +305,26 @@ export default function MediaLibraryView() {
                     </span>
                   </div>
 
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950/70 text-purple-300 border border-purple-500/30">
-                    {item.badgeText}
-                  </span>
+                  <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                    <span
+                      className={`text-[10px] font-mono px-2 py-0.5 rounded border ${
+                        item.energyLevel === "low_energy"
+                          ? "bg-emerald-950/80 text-emerald-300 border-emerald-500/40"
+                          : item.energyLevel === "medium_energy"
+                          ? "bg-amber-950/80 text-amber-300 border-amber-500/40"
+                          : "bg-purple-950/80 text-purple-300 border-purple-500/40"
+                      }`}
+                    >
+                      {item.energyLevel === "low_energy"
+                        ? "⚡ Cuillère Basse"
+                        : item.energyLevel === "medium_energy"
+                        ? "⚡⚡ Énergie Moyenne"
+                        : "⚡⚡⚡ Hyperfocus"}
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700">
+                      {item.badgeText}
+                    </span>
+                  </div>
                 </div>
 
                 {/* TITLE & AUTHOR */}
@@ -258,9 +336,37 @@ export default function MediaLibraryView() {
                 </div>
 
                 {/* DESCRIPTION */}
-                <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                <p className="text-xs text-slate-300 leading-relaxed mb-3">
                   {item.description}
                 </p>
+
+                {/* KEY TAKEAWAYS FOR CAREGIVERS */}
+                {item.keyTakeawayForCaregivers && (
+                  <div className="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/25 text-[11px] text-emerald-200 mb-3 space-y-1">
+                    <div className="font-mono text-[10px] text-emerald-400 uppercase tracking-wider flex items-center gap-1 font-bold">
+                      <HeartHandshake className="w-3 h-3 text-emerald-400" />
+                      <span>Clé pour les proches :</span>
+                    </div>
+                    <p className="leading-relaxed italic">
+                      "{item.keyTakeawayForCaregivers}"
+                    </p>
+                  </div>
+                )}
+
+                {/* RECOMMENDED FOR TRAITS */}
+                {item.recommendedForTraits && item.recommendedForTraits.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                    <span className="text-[10px] font-mono text-slate-500">Axes liés :</span>
+                    {item.recommendedForTraits.map((tId) => (
+                      <span
+                        key={tId}
+                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-cyan-300/90 border border-slate-800"
+                      >
+                        #{tId}
+                      </span>
+                    ))}
+                  </div>
+                )}
 
                 {/* HIGHLIGHTS */}
                 <div className="space-y-1.5 mb-4 p-3 rounded-lg bg-slate-950/60 border border-slate-800/80">

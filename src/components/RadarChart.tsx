@@ -98,8 +98,10 @@ export default function RadarChart({
           <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
           <span>HUD.RADAR // COORD_SYSTEM: POLAR_4X</span>
         </span>
-        <span className="hidden sm:inline">DATA_STREAM: LIVE_PEERS // ENCRYPTION: ANONYMOUS</span>
-        <span>STATUS: [ONLINE]</span>
+        <span className="hidden sm:inline">
+          TARGET_LOCK: [{selectedAxis.name.toUpperCase()}] // CALIB: {selectedAxis.value}% // RATIO: {(selectedAxis.value / 100).toFixed(2)}
+        </span>
+        <span className="text-emerald-400 font-bold">[RADAR_LINK: STABLE]</span>
       </div>
 
       {/* CARD HEADER */}
@@ -283,7 +285,7 @@ export default function RadarChart({
                 className="transition-all duration-300"
               />
 
-              {/* INTERACTIVE RADAR VERTICES */}
+              {/* INTERACTIVE RADAR VERTICES WITH HUD TARGET LOCK */}
               {axes.map((axis, i) => {
                 const { x, y } = getCoordinates(i, axis.value / 100);
                 const isSelected = axis.id === selectedAxisId;
@@ -294,26 +296,74 @@ export default function RadarChart({
                     className="cursor-pointer"
                     onClick={() => setSelectedAxisId(axis.id)}
                   >
-                    {/* Pulsing ring if selected */}
-                    {isSelected && !lowSensoryMode && (
-                      <circle
-                        cx={x}
-                        cy={y}
-                        r="12"
-                        fill="none"
-                        stroke="#22d3ee"
-                        strokeWidth="1.5"
-                        opacity="0.6"
-                        className="animate-ping"
-                      />
+                    {/* HUD TARGET LOCK RETICLE (when selected) */}
+                    {isSelected && (
+                      <g className="transition-all duration-300">
+                        {/* Target Crosshairs */}
+                        <line
+                          x1={x - 18}
+                          y1={y}
+                          x2={x + 18}
+                          y2={y}
+                          stroke="#22d3ee"
+                          strokeWidth="1"
+                          strokeDasharray={lowSensoryMode ? undefined : "2 2"}
+                        />
+                        <line
+                          x1={x}
+                          y1={y - 18}
+                          x2={x}
+                          y2={y + 18}
+                          stroke="#22d3ee"
+                          strokeWidth="1"
+                          strokeDasharray={lowSensoryMode ? undefined : "2 2"}
+                        />
+
+                        {/* Targeting Reticle Ring */}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r="15"
+                          fill="none"
+                          stroke="#22d3ee"
+                          strokeWidth="1.2"
+                          strokeDasharray="4 3"
+                          className={lowSensoryMode ? undefined : "hud-reticle-spin-slow"}
+                        />
+
+                        {/* Corner brackets frame */}
+                        <rect
+                          x={x - 11}
+                          y={y - 11}
+                          width="22"
+                          height="22"
+                          fill="none"
+                          stroke="rgba(34, 211, 238, 0.45)"
+                          strokeWidth="1"
+                        />
+
+                        {/* Telemetry coordinate readout */}
+                        <text
+                          x={x + 18}
+                          y={y - 10}
+                          fill="#22d3ee"
+                          fontSize="8"
+                          fontFamily="monospace"
+                          fontWeight="bold"
+                        >
+                          [LOCK_{axis.value}%]
+                        </text>
+                      </g>
                     )}
+
+                    {/* Node Core */}
                     <circle
                       cx={x}
                       cy={y}
-                      r={isSelected ? "7" : "5"}
+                      r={isSelected ? "6.5" : "4.5"}
                       fill="#ffffff"
                       stroke={axis.color}
-                      strokeWidth="3"
+                      strokeWidth={isSelected ? "3.5" : "2.5"}
                       className="transition-all duration-200"
                     />
                   </g>
